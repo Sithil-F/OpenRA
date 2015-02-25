@@ -10,6 +10,7 @@
 
 using OpenRA.Mods.Common.Widgets.Logic;
 using OpenRA.Widgets;
+using OpenRA.Mods.RA;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic
 {
@@ -38,9 +39,12 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
             var singleplayerMenu = widget.Get("SINGLEPLAYER_MENU");
             singleplayerMenu.IsVisible = () => menuType == MenuType.Singleplayer;
 
+            CampaignProgress.init();
+
             var campaignButton = singleplayerMenu.Get<ButtonWidget>("CAMPAIGN_BUTTON");
             campaignButton.OnClick = () =>
             {
+                CampaignProgress.setSaveProgressFlag();
                 menuType = MenuType.None;
                 //Game.OpenWindow("CAMPAIGN_PANEL", new WidgetArgs
                 Game.OpenWindow("CAMPAIGN_MENU", new WidgetArgs
