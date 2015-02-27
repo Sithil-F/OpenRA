@@ -13,12 +13,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+
 using OpenRA.Graphics;
+using OpenRA.Mods.Cnc;
 using OpenRA.Network;
 using OpenRA.Widgets;
-using OpenRA.Mods.Cnc;
 
-namespace OpenRA.Mods.RA.Widgets.Logic 
+namespace OpenRA.Mods.RA.Widgets.Logic
 {
     public class CampaignMenuLogic
     {
@@ -30,12 +31,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
             var newButton = widget.Get<ButtonWidget>("NEW_BUTTON");
             var backButton = widget.Get<ButtonWidget>("BACK_BUTTON");
 
-            if (CampaignProgress.getGdiProgress() == 0)
+            if (CampaignProgress.GetGdiProgress() == 0)
             {
                 continueButtonGDI.Disabled = true;
             }
 
-            if (CampaignProgress.getNodProgress() == 0)
+            if (CampaignProgress.GetNodProgress() == 0)
             {
                 continueButtonNOD.Disabled = true;
             }

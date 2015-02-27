@@ -9,8 +9,8 @@
 #endregion
 
 using OpenRA.Mods.Common.Widgets.Logic;
-using OpenRA.Widgets;
 using OpenRA.Mods.RA;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic
 {
@@ -27,9 +27,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			var shellmapDisabledDecorations = widget.Get("SHELLMAP_DISABLED_DECORATIONS");
 			shellmapDisabledDecorations.IsVisible = () => !Game.Settings.Game.ShowShellmap;
-			
 
-            //Changed for Campaign
+            // Changed for Campaign
             rootMenu = widget;
 
             var mainMenu = widget.Get("MAIN_MENU");
@@ -39,12 +38,12 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
             var singleplayerMenu = widget.Get("SINGLEPLAYER_MENU");
             singleplayerMenu.IsVisible = () => menuType == MenuType.Singleplayer;
 
-            CampaignProgress.init();
+            CampaignProgress.Init();
 
             var campaignButton = singleplayerMenu.Get<ButtonWidget>("CAMPAIGN_BUTTON");
             campaignButton.OnClick = () =>
             {
-                CampaignProgress.setSaveProgressFlag();
+                CampaignProgress.SetSaveProgressFlag();
                 menuType = MenuType.None;
                 Game.OpenWindow("CAMPAIGN_MENU", new WidgetArgs
 				{

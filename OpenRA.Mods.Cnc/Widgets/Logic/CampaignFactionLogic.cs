@@ -16,9 +16,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
     using System.Linq;
     using System.Net;
 
+    using OpenRA.Mods.Cnc;
     using OpenRA.Network;
     using OpenRA.Widgets;
-    using OpenRA.Mods.Cnc;
 
     public class CampaignFactionLogic
     {
@@ -56,8 +56,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
             // Mute other distracting sounds
             cachedMusicVolume = Sound.MusicVolume;
             Sound.MusicVolume = 0;
-            
-            //hide choose text, if faction is selected
+
+            // hide choose text, if faction is selected
             chooseTextBg = widget.Get<BackgroundWidget>("CHOOSE_TEXT_BG");
             chooseTextBg.Visible = false;
 
@@ -67,7 +67,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
             gdiButton.OnClick = () =>
             {
-                CampaignProgress.saveProgress("GDI", 0);
+                CampaignProgress.SaveProgress("GDI", 0);
                 startedCampaign = gdiCampaign;
                 Sound.Play("gdiselected.wav");
                 playThen = PlayThen.GDI;
@@ -75,7 +75,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
             nodButton.OnClick = () =>
             {
-                CampaignProgress.saveProgress("Nod", 0);
+                CampaignProgress.SaveProgress("Nod", 0);
                 startedCampaign = nodCampaign;
                 Sound.Play("brotherhoodofnodselected.wav");
                 playThen = PlayThen.chooseNOD;
@@ -146,7 +146,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
             videoStopped = true;
         }
 
-
         Map DetectFirstMapFromFaction(string faction)
         {
             var yaml = Game.ModData.Manifest.Missions.Select(MiniYaml.FromFile).Aggregate(MiniYaml.MergeLiberal);
@@ -195,7 +194,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
                     videoPlayer.Load(video);
                     videoPlayer.PlayThen(() => { StopVideo(); om = Game.JoinServer(IPAddress.Loopback.ToString(), Game.CreateLocalServer(firstMapFromFaction), "", false); });
                 }
-                catch (FileNotFoundException) 
+                catch (FileNotFoundException)
                 {
                     StopVideo();
                     om = Game.JoinServer(IPAddress.Loopback.ToString(), Game.CreateLocalServer(firstMapFromFaction), "", false);

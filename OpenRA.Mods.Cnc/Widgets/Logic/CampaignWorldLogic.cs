@@ -13,18 +13,19 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
+using OpenRA.Mods.Cnc;
 using OpenRA.Network;
 using OpenRA.Widgets;
-using OpenRA.Mods.Cnc;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {
     public class CampaignWorldLogic
     {
         public static string Campaign = "";
-        
+
         static string map = "";
         static bool lastMissionSuccessfullyPlayedGDI = false;
         static bool lastMissionSuccessfullyPlayedNod = false;
@@ -49,7 +50,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
         VqaPlayerWidget videoPlayer;
         BackgroundWidget videoBackground;
- 
+
         bool congratsFlag = false;
         float cachedMusicVolume;
         int nextMission = 1;
@@ -63,7 +64,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
         bool videoStopped = false;
         bool campaignPreviewRequired = false;
-        
+
         Map nextMap;
 
         [ObjectCreator.UseCtor]
@@ -113,13 +114,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
                         factionMaps.AddRange(maps);     // factionMaps = all GDI maps
                         worldMenuTitle.Text = kv.Key.ToString();
                         previewMenuTitle.Text = kv.Key.ToString();
-                        if (Campaign.Equals("GDI Campaign")) 
+                        if (Campaign.Equals("GDI Campaign"))
                         {
-                            nextMission = CampaignProgress.getGdiProgress();
+                            nextMission = CampaignProgress.GetGdiProgress();
                         }
-                        else 
+                        else
                         {
-                            nextMission = CampaignProgress.getNodProgress();
+                            nextMission = CampaignProgress.GetNodProgress();
                         }
 
                         progress = nextMission;
@@ -143,7 +144,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
                 else
                 {
                     lastMissionSuccessfullyPlayedNod = true;
-                }     
+                }
             }
             else {
                 congratsFlag = false;
@@ -155,7 +156,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
             // GDI05 Preview Germany or Ukraine --> Flag = 0 -> Germany
             if (Campaign.Equals("GDI Campaign") && progress == 4)
             {
-                if (CampaignProgress.getGdiPathFlag() == 0)
+                if (CampaignProgress.GetGdiPathFlag() == 0)
                 {
                     nextMaps.RemoveRange(2, 2);
                 }
@@ -234,7 +235,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
                     if (lastMissionSuccessfullyPlayedGDI || lastMissionSuccessfullyPlayedNod)
                     {
                         nextMission = progress;
-                        CampaignProgress.saveProgress(this.faction, nextMission);
+                        CampaignProgress.SaveProgress(this.faction, nextMission);
                     }
 
                     Game.Disconnect();
@@ -371,9 +372,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
             campaignBrowser.IsVisible = () => false;
         }
 
-        void SetCongratulationContent() 
+        void SetCongratulationContent()
         {
-            //it would be more elegant to read the text from a yaml-file instead of hardcoding it
+            // it would be more elegant to read the text from a yaml-file instead of hardcoding it
             var victoryTextGdi = "Good work Commander! Thanks to your efforts the Global Defence Initiative was victorious. Your actions have thrown the brotherhood into disarray and without their leader we should soon be able to completely rid the world of their remnants.";
             var victoryTextNod = "Well done Brother! Your heroic actions have shown the world truth and freedom. Soon we will be free of the GDIs opression. Kane is proud of you!";
             var victoryText = this.faction == "GDI" ? victoryTextGdi : victoryTextNod;
@@ -495,11 +496,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
             {
                 if (progress == 3 && mapIndex == 1)
                 {
-                    CampaignProgress.setGdiPathFlag();
+                    CampaignProgress.SetGdiPathFlag();
                 }
-                else 
+                else
                 {
-                    CampaignProgress.resetGdiPathFlag();
+                    CampaignProgress.ResetGdiPathFlag();
                 }
             }
 
@@ -537,24 +538,24 @@ namespace OpenRA.Mods.RA.Widgets.Logic
                     }
 
                     // if last mission is found
-                    if (map1.Container.Name.Contains(CampaignWorldLogic.map)) 
+                    if (map1.Container.Name.Contains(CampaignWorldLogic.map))
                     {
                         exit = true;
 
                         if (i <= progress)
                         {   // if last mission < stored mission
-                            if (Campaign.Equals("GDI Campaign")) 
+                            if (Campaign.Equals("GDI Campaign"))
                             {
                                 lastMissionSuccessfullyPlayedGDI = true;
                             }
-                            else 
+                            else
                             {
                                 lastMissionSuccessfullyPlayedNod = true;
                             }
-                            
+
                             progress = i;
                             nextMission = i - 1;
-                            CampaignProgress.saveProgress(this.faction, progress);
+                            CampaignProgress.SaveProgress(this.faction, progress);
                         }
                         else
                         {
@@ -610,7 +611,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
                         // if mission is missing increment stored progress
                         if (nextMission > progress)
                         {
-                            CampaignProgress.saveProgress(this.faction, nextMission);
+                            CampaignProgress.SaveProgress(this.faction, nextMission);
                         }
                     }
                 }

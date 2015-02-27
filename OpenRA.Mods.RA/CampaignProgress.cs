@@ -12,7 +12,7 @@ namespace OpenRA.Mods.RA
         private static bool saveProgressFlag = false;
         private static bool gdiPathFlag = false;
 
-        public static void init()
+        public static void Init()
         {
             ModMetadata initialMod = null;
             ModMetadata.AllMods.TryGetValue(Game.Settings.Game.Mod, out initialMod);
@@ -20,37 +20,37 @@ namespace OpenRA.Mods.RA
             progressFile = Platform.ResolvePath("^", mod + "-progress.yaml");
         }
 
-        public static void setGdiPathFlag()
+        public static void SetGdiPathFlag()
         {
             gdiPathFlag = true;
         }
 
-        public static void resetGdiPathFlag()
+        public static void ResetGdiPathFlag()
         {
             gdiPathFlag = false;
         }
 
-        public static void setSaveProgressFlag()
+        public static void SetSaveProgressFlag()
         {
             saveProgressFlag = true;
         }
 
-        public static void resetSaveProgressFlag()
+        public static void ResetSaveProgressFlag()
         {
             saveProgressFlag = false;
         }
 
-        public static bool getSaveProgressFlag()
+        public static bool GetSaveProgressFlag()
         {
             return saveProgressFlag;
         }
 
-        public static void saveProgress(string faction, int mission)
+        public static void SaveProgress(string faction, int mission)
         {
             if (saveProgressFlag)
             {
                 if (!GlobalFileSystem.Exists(progressFile))
-                    createProgressFile();
+                    CreateProgressFile();
                 var yaml = MiniYaml.FromFile(progressFile);
                 foreach (var kv in yaml)
                 {
@@ -74,20 +74,20 @@ namespace OpenRA.Mods.RA
             }
         }
 
-        public static int getGdiProgress()
+        public static int GetGdiProgress()
         {
-            return getMission("GDI");
+            return GetMission("GDI");
         }
 
-        public static int getNodProgress()
+        public static int GetNodProgress()
         {
-            return getMission("Nod");
+            return GetMission("Nod");
         }
 
-        private static int getMission(string faction)
+        private static int GetMission(string faction)
         {
             if (!GlobalFileSystem.Exists(progressFile))
-                createProgressFile();
+                CreateProgressFile();
             var yaml = MiniYaml.FromFile(progressFile);
             int mission = 0;
             foreach (var kv in yaml)
@@ -107,10 +107,10 @@ namespace OpenRA.Mods.RA
             return mission;
         }
 
-        public static int getGdiPathFlag()
+        public static int GetGdiPathFlag()
         {
             if (!GlobalFileSystem.Exists(progressFile))
-                createProgressFile();
+                CreateProgressFile();
             var yaml = MiniYaml.FromFile(progressFile);
             int flag = 0;
             foreach (var kv in yaml)
@@ -130,7 +130,7 @@ namespace OpenRA.Mods.RA
             return flag;
         }
 
-        private static void createProgressFile()
+        private static void CreateProgressFile()
         {
             List<MiniYamlNode> yaml = new List<MiniYamlNode>();
             List<MiniYamlNode> gdiNodes = new List<MiniYamlNode>();

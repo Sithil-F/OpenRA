@@ -44,16 +44,16 @@ namespace OpenRA.Mods.RA.Widgets
                     {
                         if (kv.Key.Equals("GDI Campaign") && world.LocalPlayer.Country.Name.Equals("GDI"))
                         {
-                            storedMission = CampaignProgress.getGdiProgress();
+                            storedMission = CampaignProgress.GetGdiProgress();
                         }
                         else if (kv.Key.Equals("Nod Campaign") && world.LocalPlayer.Country.Name.Equals("Nod"))
                         {
-                            storedMission = CampaignProgress.getNodProgress();
+                            storedMission = CampaignProgress.GetNodProgress();
                         }
                     }
                 }
 
-                CampaignProgress.saveProgress(world.LocalPlayer.Country.Name, storedMission + 1);
+                CampaignProgress.SaveProgress(world.LocalPlayer.Country.Name, storedMission + 1);
             }
 
 			var mpe = world.WorldActor.TraitOrDefault<MenuPaletteEffect>();
