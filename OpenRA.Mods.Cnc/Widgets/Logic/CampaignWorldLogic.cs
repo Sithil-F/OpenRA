@@ -373,6 +373,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
         void SetCongratulationContent() 
         {
+            //it would be more elegant to read the text from a yaml-file instead of hardcoding it
             var victoryTextGdi = "Good work Commander! Thanks to your efforts the Global Defence Initiative was victorious. Your actions have thrown the brotherhood into disarray and without their leader we should soon be able to completely rid the world of their remnants.";
             var victoryTextNod = "Well done Brother! Your heroic actions have shown the world truth and freedom. Soon we will be free of the GDIs opression. Kane is proud of you!";
             var victoryText = this.faction == "GDI" ? victoryTextGdi : victoryTextNod;

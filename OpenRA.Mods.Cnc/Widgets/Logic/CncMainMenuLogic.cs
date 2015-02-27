@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			shellmapDisabledDecorations.IsVisible = () => !Game.Settings.Game.ShowShellmap;
 			
 
-            //Änderungen
+            //Changed for Campaign
             rootMenu = widget;
 
             var mainMenu = widget.Get("MAIN_MENU");
@@ -46,7 +46,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
             {
                 CampaignProgress.setSaveProgressFlag();
                 menuType = MenuType.None;
-                //Game.OpenWindow("CAMPAIGN_PANEL", new WidgetArgs
                 Game.OpenWindow("CAMPAIGN_MENU", new WidgetArgs
 				{
 					{ "onExit", () => menuType = MenuType.Singleplayer },

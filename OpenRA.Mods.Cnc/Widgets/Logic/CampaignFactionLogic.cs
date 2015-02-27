@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
             cachedMusicVolume = Sound.MusicVolume;
             Sound.MusicVolume = 0;
             
-            // choose text unsichtbar machen, wenn faction gewählt
+            //hide choose text, if faction is selected
             chooseTextBg = widget.Get<BackgroundWidget>("CHOOSE_TEXT_BG");
             chooseTextBg.Visible = false;
 
@@ -146,14 +146,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
             videoStopped = true;
         }
 
-        // TODO:
-        // Siehe MissionBrowserLogic
+
         Map DetectFirstMapFromFaction(string faction)
         {
             var yaml = Game.ModData.Manifest.Missions.Select(MiniYaml.FromFile).Aggregate(MiniYaml.MergeLiberal);
             Map map = null;
 
-            // var firstMission = new List<short>();
             var allMaps = new List<Map>();
             foreach (var kv in yaml)
             {
@@ -175,7 +173,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
         void StartCampaign(string faction)
         {
-            // StopVideo();
             campaignStarted = true;
             OrderManager om = null;
 
