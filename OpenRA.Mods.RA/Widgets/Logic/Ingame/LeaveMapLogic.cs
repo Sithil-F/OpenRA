@@ -32,6 +32,30 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			this.orderManager = orderManager;
 
+            if (world.LocalPlayer.WinState == WinState.Won)
+            {
+                int storedMission = 0;
+
+                if (Game.ModData.Manifest.Missions.Any())
+                {
+                    var yaml = Game.ModData.Manifest.Missions.Select(MiniYaml.FromFile).Aggregate(MiniYaml.MergeLiberal);
+
+                    foreach (var kv in yaml)
+                    {
+                        if (kv.Key.Equals("GDI Campaign") && world.LocalPlayer.Country.Name.Equals("GDI"))
+                        {
+                            storedMission = CampaignProgress.getGdiProgress();
+                        }
+                        else if (kv.Key.Equals("Nod Campaign") && world.LocalPlayer.Country.Name.Equals("Nod"))
+                        {
+                            storedMission = CampaignProgress.getNodProgress();
+                        }
+                    }
+                }
+
+                CampaignProgress.saveProgress(world.LocalPlayer.Country.Name, storedMission + 1);
+            }
+
 			var mpe = world.WorldActor.TraitOrDefault<MenuPaletteEffect>();
 			if (mpe != null)
 				mpe.Fade(mpe.Info.MenuEffect);

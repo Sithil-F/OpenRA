@@ -15,6 +15,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 {
 	public class CncMainMenuLogic : MainMenuLogic
 	{
+		readonly Widget rootMenu;
 		[ObjectCreator.UseCtor]
 		public CncMainMenuLogic(Widget widget, World world)
 			: base(widget, world)
@@ -25,6 +26,34 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			var shellmapDisabledDecorations = widget.Get("SHELLMAP_DISABLED_DECORATIONS");
 			shellmapDisabledDecorations.IsVisible = () => !Game.Settings.Game.ShowShellmap;
+			
+
+            //Änderungen
+            rootMenu = widget;
+
+            var mainMenu = widget.Get("MAIN_MENU");
+            mainMenu.IsVisible = () => menuType == MenuType.Main;
+
+            // Singleplayer menu
+            var singleplayerMenu = widget.Get("SINGLEPLAYER_MENU");
+            singleplayerMenu.IsVisible = () => menuType == MenuType.Singleplayer;
+
+            var campaignButton = singleplayerMenu.Get<ButtonWidget>("CAMPAIGN_BUTTON");
+            campaignButton.OnClick = () =>
+            {
+                menuType = MenuType.None;
+                //Game.OpenWindow("CAMPAIGN_PANEL", new WidgetArgs
+                Game.OpenWindow("CAMPAIGN_MENU", new WidgetArgs
+				{
+					{ "onExit", () => menuType = MenuType.Singleplayer },
+					{ "onStart", RemoveShellmapUI }
+				});
+            };
+        }
+
+        void RemoveShellmapUI()
+        {
+            rootMenu.Parent.RemoveChild(rootMenu);
 		}
 	}
 }

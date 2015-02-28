@@ -79,6 +79,9 @@
     <Compile Include="Traits\Render\WithRoof.cs" />
     <Compile Include="Traits\SpawnViceroid.cs" />
     <Compile Include="Traits\SupportPowers\IonCannonPower.cs" />
+    <Compile Include="Widgets\Logic\CampaignFactionLogic.cs" />
+    <Compile Include="Widgets\Logic\CampaignMenuLogic.cs" />
+    <Compile Include="Widgets\Logic\CampaignWorldLogic.cs" />
     <Compile Include="Widgets\Logic\CncMainMenuLogic.cs" />
     <Compile Include="Widgets\Logic\ProductionTabsLogic.cs" />
   </ItemGroup>
