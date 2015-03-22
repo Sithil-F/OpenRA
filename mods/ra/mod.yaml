@@ -116,6 +116,9 @@ ChromeLayout:
 	./mods/ra/chrome/confirmation-dialogs.yaml
 	./mods/ra/chrome/editor.yaml
 	./mods/ra/chrome/irc.yaml
+	./mods/ra/chrome/campaign-faction.yaml
+	./mods/ra/chrome/campaign-menu.yaml
+	./mods/ra/chrome/campaign-world.yaml
 
 Weapons:
 	./mods/ra/weapons/explosions.yaml
@@ -202,6 +205,12 @@ Fonts:
 
 Missions:
 	./mods/ra/missions.yaml
+	
+FactionMedia:
+	./mods/ra/faction-media.yaml
+	
+Congratulations:
+	./mods/ra/congratulationstext.yaml
 
 MapGrid:
 	TileSize: 24,24

@@ -123,6 +123,9 @@ ChromeLayout:
 	./mods/cnc/chrome/missionbrowser.yaml
 	./mods/cnc/chrome/editor.yaml
 	./mods/cnc/chrome/irc.yaml
+	./mods/cnc/chrome/campaign-faction.yaml
+	./mods/cnc/chrome/campaign-menu.yaml
+	./mods/cnc/chrome/campaign-world.yaml
 
 Voices:
 	./mods/cnc/audio/voices.yaml
@@ -202,6 +205,12 @@ Fonts:
 
 Missions:
 	./mods/cnc/missions.yaml
+	
+FactionMedia:
+	./mods/cnc/faction-media.yaml
+	
+Congratulations:
+	./mods/cnc/congratulationstext.yaml
 
 MapGrid:
 	TileSize: 24,24

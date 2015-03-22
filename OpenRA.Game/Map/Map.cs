@@ -168,10 +168,13 @@ namespace OpenRA
 		public string Title;
 		public string Type = "Conquest";
 		public string Description;
+		public string CountryDescription;
+		public string NextMission;
 		public string Author;
 		public string Tileset;
 		public bool AllowStartUnitConfig = true;
 		public Bitmap CustomPreview;
+		public Bitmap CampaignPathPreview;
 		public bool InvalidCustomRules { get; private set; }
 
 		public WVec OffsetOfSubCell(SubCell subCell)
@@ -279,6 +282,7 @@ namespace OpenRA
 
 			Title = "Name your map here";
 			Description = "Describe your map here";
+			CountryDescription = "Describe the map country information here";
 			Author = "Your name here";
 
 			MapSize = new int2(size);
@@ -380,6 +384,10 @@ namespace OpenRA
 			if (Container.Exists("map.png"))
 				using (var dataStream = Container.GetContent("map.png"))
 					CustomPreview = new Bitmap(dataStream);
+
+			if (Container.Exists("preview.png"))
+				using (var dataStream = Container.GetContent("preview.png"))
+					CampaignPathPreview = new Bitmap(dataStream);
 
 			PostInit();
 
@@ -543,6 +551,7 @@ namespace OpenRA
 				"RequiresMod",
 				"Title",
 				"Description",
+				"CountryDescription",
 				"Author",
 				"Tileset",
 				"MapSize",
