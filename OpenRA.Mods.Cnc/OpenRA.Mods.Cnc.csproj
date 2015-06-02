@@ -76,7 +76,6 @@
     <Compile Include="Widgets\Logic\CampaignLogic\CampaignMissionBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\CampaignLogic\CampaignMissionPreviewLogic.cs" />
     <Compile Include="Widgets\Logic\CampaignLogic\CampaignWorldLogic.cs" />
-    <Compile Include="Widgets\Logic\CncMainMenuLogic.cs" />
     <Compile Include="Widgets\Logic\ProductionTabsLogic.cs" />
     <Compile Include="Traits\RenderUnitFlying.cs" />
   </ItemGroup>

@@ -36,6 +36,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			rootMenu = widget;
 			rootMenu.Get<LabelWidget>("VERSION_LABEL").Text = Game.ModData.Manifest.Mod.Version;
 
+			var shellmapDecorations = widget.Get("SHELLMAP_DECORATIONS");
+			if (shellmapDecorations != null)
+			{
+				shellmapDecorations.IsVisible = () => menuType != MenuType.None && Game.Settings.Game.ShowShellmap;
+				shellmapDecorations.Get<ImageWidget>("RECBLOCK").IsVisible = () => world.WorldTick / 25 % 2 == 0;
+			}
+
+			var shellmapDisabledDecorations = widget.Get("SHELLMAP_DISABLED_DECORATIONS");
+			if (shellmapDisabledDecorations != null)
+			{
+				shellmapDisabledDecorations.IsVisible = () => !Game.Settings.Game.ShowShellmap;
+			}
+
 			// Menu buttons
 			var mainMenu = widget.Get("MAIN_MENU");
 			mainMenu.IsVisible = () => menuType == MenuType.Main;
@@ -76,6 +89,65 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// Singleplayer menu
 			var singleplayerMenu = widget.Get("SINGLEPLAYER_MENU");
 			singleplayerMenu.IsVisible = () => menuType == MenuType.Singleplayer;
+
+			CampaignProgress.Init(world.Players);
+			var factionList = new List<String>();
+			var missionPlayed = false;
+
+			foreach (var p in world.Players)
+			{
+				var faction = p.Country.Name;
+				if (!factionList.Contains(faction))
+				{
+					factionList.Add(faction);
+					missionPlayed = CampaignProgress.GetMission(faction).Length != 0;
+				}
+				if (missionPlayed)
+				{
+					break;
+				}
+			}
+
+			var campaignButton = singleplayerMenu.Get<ButtonWidget>("CAMPAIGN_BUTTON");
+			if (campaignButton != null)
+			{
+				campaignButton.OnClick = () =>
+				{
+					CampaignProgress.SetSaveProgressFlag();
+					menuType = MenuType.None;
+					if (!missionPlayed)
+					{
+						Game.OpenWindow("CAMPAIGN_FACTION", new WidgetArgs
+						{
+							{ "onExit", () => menuType = MenuType.Singleplayer },
+							{ "onStart", RemoveShellmapUI }
+						});
+					}
+					else
+					{
+						Game.OpenWindow("CAMPAIGN_MENU", new WidgetArgs
+						{
+							{ "onExit", () => menuType = MenuType.Singleplayer },
+							{ "onStart", RemoveShellmapUI }
+						});
+					}
+				};
+
+				if (CampaignProgress.GetSaveProgressFlag() && missionPlayed)
+				{
+					menuType = MenuType.None;
+					var campaignMenu = Game.OpenWindow("CAMPAIGN_MENU", new WidgetArgs
+						{
+							{ "onExit", () => menuType = MenuType.Singleplayer },
+							{ "onStart", RemoveShellmapUI }
+						});
+					Game.OpenWindow("CAMPAIGN_WORLD", new WidgetArgs
+					{
+						{ "onExit", () => campaignMenu.Visible = true },
+						{ "onStart", RemoveShellmapUI }
+					});
+				}
+			}
 
 			var missionsButton = singleplayerMenu.Get<ButtonWidget>("MISSIONS_BUTTON");
 			missionsButton.OnClick = () =>
