@@ -9,11 +9,13 @@ namespace OpenRA.Mods.Common
 	public class CampaignProgress
 	{
 		static string progressFile = Platform.ResolvePath("^", "cnc-progress.yaml");
+		static List<Player> players = new List<Player>();
 		static bool saveProgressFlag = false;
 		static string playedMission = "";
 
-		public static void Init()
+		public static void Init(List<Player> players)
 		{
+			CampaignProgress.players = players;
 			ModMetadata initialMod = null;
 			ModMetadata.AllMods.TryGetValue(Game.Settings.Game.Mod, out initialMod);
 			var mod = initialMod.Id;
@@ -68,17 +70,7 @@ namespace OpenRA.Mods.Common
 			}
 		}
 
-		public static string GetGdiProgress()
-		{
-			return GetMission("GDI");
-		}
-
-		public static string GetNodProgress()
-		{
-			return GetMission("Nod");
-		}
-
-		static string GetMission(string faction)
+		public static string GetMission(string faction)
 		{
 			if (!GlobalFileSystem.Exists(progressFile))
 				CreateProgressFile();
@@ -102,21 +94,19 @@ namespace OpenRA.Mods.Common
 		static void CreateProgressFile()
 		{
 			var yaml = new List<MiniYamlNode>();
-			var gdiNodes = new List<MiniYamlNode>();
-			var nodNodes = new List<MiniYamlNode>();
+			var mission = new MiniYamlNode("Mission", "");
 
-			var gdiMission = new MiniYamlNode("Mission", "");
-			gdiNodes.Add(gdiMission);
-			var nodMission = new MiniYamlNode("Mission", "");
-			nodNodes.Add(nodMission);
+			foreach (var p in players)
+			{
+				var nodes = new List<MiniYamlNode>();
 
-			var gdi = new MiniYaml(null, gdiNodes);
-			var gdiNode = new MiniYamlNode("GDI", gdi);
-			var nod = new MiniYaml(null, nodNodes);
-			var nodNode = new MiniYamlNode("Nod", nod);
+				nodes.Add(mission);
 
-			yaml.Add(gdiNode);
-			yaml.Add(nodNode);
+				var faction = new MiniYaml(null, nodes);
+				var node = new MiniYamlNode(p.Country.Name, faction);
+
+				yaml.Add(node);
+			}
 
 			yaml.WriteToFile(progressFile);
 		}

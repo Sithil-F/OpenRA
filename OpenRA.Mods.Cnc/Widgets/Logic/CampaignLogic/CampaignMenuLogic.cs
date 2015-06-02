@@ -34,10 +34,10 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 			var newButton = widget.Get<ButtonWidget>("NEW_BUTTON");
 			var backButton = widget.Get<ButtonWidget>("BACK_BUTTON");
 
-			if (CampaignProgress.GetGdiProgress().Length == 0)
+			if (CampaignProgress.GetMission("GDI").Length == 0)
 				continueButtonGDI.Disabled = true;
 
-			if (CampaignProgress.GetNodProgress().Length == 0)
+			if (CampaignProgress.GetMission("Nod").Length == 0)
 				continueButtonNOD.Disabled = true;
 
 			backButton.OnClick = () =>

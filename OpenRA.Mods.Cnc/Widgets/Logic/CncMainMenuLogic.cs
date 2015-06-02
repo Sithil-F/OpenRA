@@ -39,14 +39,14 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var singleplayerMenu = widget.Get("SINGLEPLAYER_MENU");
 			singleplayerMenu.IsVisible = () => menuType == MenuType.Singleplayer;
 
-			CampaignProgress.Init();
+			CampaignProgress.Init(world.Players);
 
 			var campaignButton = singleplayerMenu.Get<ButtonWidget>("CAMPAIGN_BUTTON");
 			campaignButton.OnClick = () =>
 			{
 				CampaignProgress.SetSaveProgressFlag();
 				menuType = MenuType.None;
-				if (CampaignProgress.GetGdiProgress().Length == 0 && CampaignProgress.GetNodProgress().Length == 0)
+				if (CampaignProgress.GetMission("GDI").Length == 0 && CampaignProgress.GetMission("Nod").Length == 0)
 				{
 					Game.OpenWindow("CAMPAIGN_FACTION", new WidgetArgs
 					{
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			};
 
 			if (CampaignProgress.GetSaveProgressFlag() &&
-				(CampaignProgress.GetGdiProgress().Length > 0 || CampaignProgress.GetNodProgress().Length > 0))
+				(CampaignProgress.GetMission("GDI").Length > 0 || CampaignProgress.GetMission("Nod").Length > 0))
 			{
 				menuType = MenuType.None;
 				var campaignMenu = Game.OpenWindow("CAMPAIGN_MENU", new WidgetArgs
