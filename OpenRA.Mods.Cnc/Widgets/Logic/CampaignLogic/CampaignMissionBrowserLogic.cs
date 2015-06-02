@@ -205,9 +205,9 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 		void LoadCurrentMissions()
 		{
 			if (CampaignWorldLogic.Campaign.Equals("GDI Campaign"))
-				lastMission = CampaignProgress.GetGdiProgress();
+				lastMission = CampaignProgress.GetMission("GDI");
 			else
-				lastMission = CampaignProgress.GetNodProgress();
+				lastMission = CampaignProgress.GetMission("Nod");
 			if (lastMission.Length > 0)
 			{
 				var maps = factionMaps

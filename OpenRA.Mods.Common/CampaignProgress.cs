@@ -95,17 +95,22 @@ namespace OpenRA.Mods.Common
 		{
 			var yaml = new List<MiniYamlNode>();
 			var mission = new MiniYamlNode("Mission", "");
+			var factionList = new List<String>();
 
 			foreach (var p in players)
 			{
-				var nodes = new List<MiniYamlNode>();
+				if (!factionList.Contains(p.Country.Name))
+				{
+					factionList.Add(p.Country.Name);
 
-				nodes.Add(mission);
+					var nodes = new List<MiniYamlNode>();
+					nodes.Add(mission);
 
-				var faction = new MiniYaml(null, nodes);
-				var node = new MiniYamlNode(p.Country.Name, faction);
+					var faction = new MiniYaml(null, nodes);
+					var node = new MiniYamlNode(p.Country.Name, faction);
 
-				yaml.Add(node);
+					yaml.Add(node);
+				}
 			}
 
 			yaml.WriteToFile(progressFile);
