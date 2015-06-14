@@ -62,14 +62,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 			this.SetMapContent();
 		}
 
-		public void CallbackCampaignCongratulationContinueButtonOnClick()
-		{
-			if (this.campaignMissionBrowser.GetCampaignPreviewRequired())
-				this.ShowCampaignPreview();
-			else
-				this.CallbackShowCampaignBrowserOnClick();
-		}
-
 		public void SetMapContent()
 		{
 			this.campaignMissionPreview.SetMapContent();
@@ -98,6 +90,14 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 			campaignPreview.IsVisible = () => false;
 			campaignBrowser.IsVisible = () => true;
 			campaignCongratulation.SetCongratulationVisibility(false);
+		}
+
+		public void CallbackCampaignCongratulationContinueButtonOnClick()
+		{
+			if (this.campaignMissionBrowser.GetCampaignPreviewRequired())
+				this.ShowCampaignPreview();
+			else
+				this.CallbackShowCampaignBrowserOnClick();
 		}
 
 		public void ShowCongratulations()

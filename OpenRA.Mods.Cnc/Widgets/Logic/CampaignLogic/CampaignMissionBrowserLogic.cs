@@ -132,6 +132,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 
 			this.CheckCampaignProgressForPreview();
 
+			// TODO
 			if ((CampaignWorldLogic.Campaign.Equals("GDI Campaign") && lastMissionSuccessfullyPlayedGDI) ||
 				(CampaignWorldLogic.Campaign.Equals("Nod Campaign") && lastMissionSuccessfullyPlayedNod))
 				campaignWorld.ShowCongratulations();
@@ -168,13 +169,13 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 		public void SetPreviewContent()
 		{
 			if (this.GetNextMap().Container.Exists("preview.png"))
-				using (var dataStream = this.GetNextMap().Container.GetContent("preview.png"))
-				{
-					this.GetNextMap().CustomPreview = new System.Drawing.Bitmap(dataStream);
-					var preview = new MapPreview(this.GetNextMap().Uid, Game.ModData.MapCache);
-					preview.SetMinimap(new SheetBuilder(SheetType.BGRA).Add(this.GetNextMap().CustomPreview));
-					campaignPreviewWidget.Preview = () => preview;
-				}
+			{
+				var uid = this.GetNextMap().Uid;
+				var mapCache = Game.ModData.MapCache[uid];
+				var preview = new MapPreview(uid, Game.ModData.MapCache);
+				preview.SetMinimap(mapCache.GetMinimap());
+				campaignPreviewWidget.Preview = () => preview;
+			}
 		}
 
 		void LoadFactionMaps()
