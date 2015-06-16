@@ -168,14 +168,13 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 
 		public void SetPreviewContent()
 		{
-			if (this.GetNextMap().Container.Exists("preview.png"))
+			var campaignPathPreview = new MapPreview(null, null);
+			var campaignPathBitmap = this.GetNextMap().CampaignPathPreview;
+
+			if (campaignPathBitmap != null)
 			{
-				var previewOfMissions = new MapPreview(null, null);
-				var previewDataStream = this.GetNextMap().Container.GetContent("preview.png");
-				var previewBitmap = new System.Drawing.Bitmap(previewDataStream);
-				var previewSprite = new SheetBuilder(SheetType.BGRA).Add(previewBitmap);
-				previewOfMissions.SetMinimap(previewSprite);
-				campaignPreviewWidget.Preview = () => previewOfMissions;
+				campaignPathPreview.SetMinimap(new SheetBuilder(SheetType.BGRA).Add(campaignPathBitmap));
+				campaignPreviewWidget.Preview = () => campaignPathPreview;
 			}
 		}
 

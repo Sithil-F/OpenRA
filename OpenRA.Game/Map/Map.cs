@@ -173,6 +173,7 @@ namespace OpenRA
 		public string Tileset;
 		public bool AllowStartUnitConfig = true;
 		public Bitmap CustomPreview;
+		public Bitmap CampaignPathPreview;
 		public bool InvalidCustomRules { get; private set; }
 
 		public WVec OffsetOfSubCell(SubCell subCell)
@@ -364,6 +365,10 @@ namespace OpenRA
 			if (Container.Exists("map.png"))
 				using (var dataStream = Container.GetContent("map.png"))
 					CustomPreview = new Bitmap(dataStream);
+
+			if (Container.Exists("preview.png"))
+				using (var dataStream = Container.GetContent("preview.png"))
+					CampaignPathPreview = new Bitmap(dataStream);
 
 			PostInit();
 
