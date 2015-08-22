@@ -79,6 +79,13 @@ Container@MAINMENU:
 							Text: Singleplayer
 							Align: Center
 							Font: Bold
+						Button@CAMPAIGN_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 140
+							Width: 140
+							Height: 30
+							Text: Campaign
+							Font: Bold
 						Button@SKIRMISH_BUTTON:
 							X: PARENT_RIGHT/2-WIDTH/2
 							Y: 60
