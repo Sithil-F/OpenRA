@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			foreach (var p in world.Players)
 			{
-				var faction = p.Country.Name;
+				var faction = p.Faction.Name;
 				if (!factionList.Contains(faction))
 				{
 					factionList.Add(faction);

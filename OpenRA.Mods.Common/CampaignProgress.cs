@@ -99,15 +99,15 @@ namespace OpenRA.Mods.Common
 
 			foreach (var p in players)
 			{
-				if (!factionList.Contains(p.Country.Name))
+				if (!factionList.Contains(p.Faction.Name))
 				{
-					factionList.Add(p.Country.Name);
+					factionList.Add(p.Faction.Name);
 
 					var nodes = new List<MiniYamlNode>();
 					nodes.Add(mission);
 
 					var faction = new MiniYaml(null, nodes);
-					var node = new MiniYamlNode(p.Country.Name, faction);
+					var node = new MiniYamlNode(p.Faction.Name, faction);
 
 					yaml.Add(node);
 				}
