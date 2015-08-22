@@ -25,26 +25,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public CampaignMenuLogic(Widget widget, Action onStart, Action onExit)
 		{
-			var continueButton1 = widget.Get<ButtonWidget>("CONTINUE_FACTION1_BUTTON");
-			var continueButton2 = widget.Get<ButtonWidget>("CONTINUE_FACTION2_BUTTON");
 			var newButton = widget.Get<ButtonWidget>("NEW_BUTTON");
 			var backButton = widget.Get<ButtonWidget>("BACK_BUTTON");
 
-			var factionList = new List<String>();
-
-			foreach (var p in CampaignProgress.players)
+			var count = 0;
+			foreach (var f in CampaignProgress.factions)
 			{
-				if (!factionList.Contains(p.Faction.Name))
+				count++;
+				var continueButton = widget.Get<ButtonWidget>("CONTINUE_" + f.ToUpper() + "_BUTTON");
+				
+				if (CampaignProgress.GetMission(f).Length == 0)
+					continueButton.Disabled = true;
+
+				continueButton.OnClick = () =>
 				{
-					factionList.Add(p.Faction.Name);
-					if (CampaignProgress.GetMission(p.Faction.Name).Length == 0)
+					CampaignWorldLogic.Campaign = f + " Campaign";
+					Game.OpenWindow("CAMPAIGN_WORLD", new WidgetArgs
 					{
-						if (factionList.Count == 1)
-							continueButton2.Disabled = true;
-						if (factionList.Count == 2)
-							continueButton1.Disabled = true;
-					}
-				}
+						{ "onExit", () => { } },
+						{ "onStart", () => widget.Parent.RemoveChild(widget) }
+					});
+				};
 			}
 
 			backButton.OnClick = () =>
@@ -63,25 +64,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				});
 			};
 
-			continueButton1.OnClick = () =>
-			{
-				CampaignWorldLogic.Campaign = "GDI Campaign";
-				Game.OpenWindow("CAMPAIGN_WORLD", new WidgetArgs
-					{
-						{ "onExit", () => { } },
-						{ "onStart", () => widget.Parent.RemoveChild(widget) }
-					});
-			};
-
-			continueButton2.OnClick = () =>
-			{
-				CampaignWorldLogic.Campaign = "Nod Campaign";
-				Game.OpenWindow("CAMPAIGN_WORLD", new WidgetArgs
-					{
-						{ "onExit", () => { } },
-						{ "onStart", () => widget.Parent.RemoveChild(widget) }
-					});
-			};
 		}
 	}
 }

@@ -9,13 +9,17 @@ namespace OpenRA.Mods.Common
 	public class CampaignProgress
 	{
 		static string progressFile = Platform.ResolvePath("^", "cnc-progress.yaml");
-		public static List<Player> players = new List<Player>();
+		public static List<String> factions = new List<String>();
 		static bool saveProgressFlag = false;
 		static string playedMission = "";
 
 		public static void Init(List<Player> players)
 		{
-			CampaignProgress.players = players;
+			foreach (var p in players)
+			{
+				if (!factions.Contains(p.Faction.Name))
+					factions.Add(p.Faction.Name);
+			}
 			ModMetadata initialMod = null;
 			ModMetadata.AllMods.TryGetValue(Game.Settings.Game.Mod, out initialMod);
 			var mod = initialMod.Id;
@@ -95,22 +99,16 @@ namespace OpenRA.Mods.Common
 		{
 			var yaml = new List<MiniYamlNode>();
 			var mission = new MiniYamlNode("Mission", "");
-			var factionList = new List<String>();
 
-			foreach (var p in players)
+			foreach (var f in factions)
 			{
-				if (!factionList.Contains(p.Faction.Name))
-				{
-					factionList.Add(p.Faction.Name);
+				var nodes = new List<MiniYamlNode>();
+				nodes.Add(mission);
 
-					var nodes = new List<MiniYamlNode>();
-					nodes.Add(mission);
+				var faction = new MiniYaml(null, nodes);
+				var node = new MiniYamlNode(f, faction);
 
-					var faction = new MiniYaml(null, nodes);
-					var node = new MiniYamlNode(p.Faction.Name, faction);
-
-					yaml.Add(node);
-				}
+				yaml.Add(node);
 			}
 
 			yaml.WriteToFile(progressFile);
