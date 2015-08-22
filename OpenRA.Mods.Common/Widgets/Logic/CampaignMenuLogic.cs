@@ -33,12 +33,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				count++;
 				var continueButton = widget.Get<ButtonWidget>("CONTINUE_" + f.ToUpper() + "_BUTTON");
+				var restartButton = widget.Get<ButtonWidget>("NEW_" + f.ToUpper() + "_BUTTON");
 				
 				if (CampaignProgress.GetMission(f).Length == 0)
 					continueButton.Disabled = true;
 
 				continueButton.OnClick = () =>
 				{
+					CampaignWorldLogic.Campaign = f + " Campaign";
+					Game.OpenWindow("CAMPAIGN_WORLD", new WidgetArgs
+					{
+						{ "onExit", () => { } },
+						{ "onStart", () => widget.Parent.RemoveChild(widget) }
+					});
+				};
+
+				restartButton.OnClick = () =>
+				{
+					continueButton.Disabled = true;
+					CampaignProgress.SaveProgress(f, "");
 					CampaignWorldLogic.Campaign = f + " Campaign";
 					Game.OpenWindow("CAMPAIGN_WORLD", new WidgetArgs
 					{
