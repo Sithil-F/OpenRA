@@ -67,7 +67,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// Campaign preview grafic
 			campaignPreviewWidget = widget.Get<MapPreviewWidget>("CAMPAIGN_PREVIEW_GRAFIC");
-			SetCampaignPathPreview(Game.ModData.MapCache[this.GetNextMap().Uid]);
 
 			campaignPreviewGraficButton = widget.Get<ButtonWidget>("CAMPAIGN_PREVIEW_GRAFIC_BUTTON");
 			campaignPreviewGraficButton.OnClick = campaignWorld.CallbackShowCampaignBrowserOnClick;
@@ -136,7 +135,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				(CampaignWorldLogic.Campaign.Equals("Nod Campaign") && lastMissionSuccessfullyPlayedNod))
 				campaignWorld.ShowCongratulations();
 			else if (campaignPreviewRequired)
+			{
+				SetCampaignPathPreview(Game.ModData.MapCache[this.GetNextMap().Uid]);
 				campaignWorld.ShowCampaignPreview();
+			}		
 			else
 				campaignWorld.CallbackShowCampaignBrowserOnClick();
 		}
