@@ -37,13 +37,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (!factionList.Contains(p.Faction.Name))
 				{
 					factionList.Add(p.Faction.Name);
-				}
-				if (CampaignProgress.GetMission(p.Faction.Name).Length == 0)
-				{
-					if (factionList.Count == 1)
-						continueButton1.Disabled = true;
-					if (factionList.Count == 2)
-						continueButton2.Disabled = true;
+					if (CampaignProgress.GetMission(p.Faction.Name).Length == 0)
+					{
+						if (factionList.Count == 1)
+							continueButton2.Disabled = true;
+						if (factionList.Count == 2)
+							continueButton1.Disabled = true;
+					}
 				}
 			}
 
