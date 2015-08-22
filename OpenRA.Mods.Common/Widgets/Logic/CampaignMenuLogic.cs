@@ -15,30 +15,37 @@ using System.Linq;
 using System.Net;
 
 using OpenRA.Graphics;
-using OpenRA.Mods.Cnc;
-using OpenRA.Mods.Common;
-using OpenRA.Mods.Common.Widgets;
-using OpenRA.Mods.Common.Widgets.Logic;
 using OpenRA.Network;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
+namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class CampaignMenuLogic
 	{
 		[ObjectCreator.UseCtor]
 		public CampaignMenuLogic(Widget widget, Action onStart, Action onExit)
 		{
-			var continueButtonGDI = widget.Get<ButtonWidget>("CONTINUE_GDI_BUTTON");
-			var continueButtonNOD = widget.Get<ButtonWidget>("CONTINUE_NOD_BUTTON");
+			var continueButton1 = widget.Get<ButtonWidget>("CONTINUE_FACTION1_BUTTON");
+			var continueButton2 = widget.Get<ButtonWidget>("CONTINUE_FACTION2_BUTTON");
 			var newButton = widget.Get<ButtonWidget>("NEW_BUTTON");
 			var backButton = widget.Get<ButtonWidget>("BACK_BUTTON");
 
-			if (CampaignProgress.GetMission("GDI").Length == 0)
-				continueButtonGDI.Disabled = true;
+			var factionList = new List<String>();
 
-			if (CampaignProgress.GetMission("Nod").Length == 0)
-				continueButtonNOD.Disabled = true;
+			foreach (var p in CampaignProgress.players)
+			{
+				if (!factionList.Contains(p.Faction.Name))
+				{
+					factionList.Add(p.Faction.Name);
+				}
+				if (CampaignProgress.GetMission(p.Faction.Name).Length == 0)
+				{
+					if (factionList.Count == 1)
+						continueButton1.Disabled = true;
+					if (factionList.Count == 2)
+						continueButton2.Disabled = true;
+				}
+			}
 
 			backButton.OnClick = () =>
 			{
@@ -56,7 +63,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 				});
 			};
 
-			continueButtonGDI.OnClick = () =>
+			continueButton1.OnClick = () =>
 			{
 				CampaignWorldLogic.Campaign = "GDI Campaign";
 				Game.OpenWindow("CAMPAIGN_WORLD", new WidgetArgs
@@ -66,7 +73,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 					});
 			};
 
-			continueButtonNOD.OnClick = () =>
+			continueButton2.OnClick = () =>
 			{
 				CampaignWorldLogic.Campaign = "Nod Campaign";
 				Game.OpenWindow("CAMPAIGN_WORLD", new WidgetArgs

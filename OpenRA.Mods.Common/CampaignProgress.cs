@@ -9,7 +9,7 @@ namespace OpenRA.Mods.Common
 	public class CampaignProgress
 	{
 		static string progressFile = Platform.ResolvePath("^", "cnc-progress.yaml");
-		static List<Player> players = new List<Player>();
+		public static List<Player> players = new List<Player>();
 		static bool saveProgressFlag = false;
 		static string playedMission = "";
 
