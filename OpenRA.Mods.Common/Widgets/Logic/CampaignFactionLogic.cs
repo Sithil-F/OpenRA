@@ -46,17 +46,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 		{			
 			this.onStart = onStart;
 
-			var players = CampaignProgress.players;
-			var factionList = new List<string>();
+			var factionList = CampaignProgress.factions;
 			var buttonList = new List<ButtonWidget>();
 
-			foreach (var p in players)
-			{
-				if (!factionList.Contains(p.Faction.Name))
-				{
-					factionList.Add(p.Faction.Name);
-				}
-			}
 			int i = 0;
 			foreach (var f in factionList)
 			{
