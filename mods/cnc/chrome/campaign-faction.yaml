@@ -19,14 +19,14 @@ Container@CAMPAIGN_FACTION:
 					Y: WINDOW_BOTTOM/20
 					Width: WINDOW_RIGHT
 					Height: WINDOW_BOTTOM*4/5
-				Button@GDI_FACTION:
+				Button@GDI:
 					X: 0
 					Y: WINDOW_BOTTOM/20
 					Width: (WINDOW_RIGHT)/2
 					Height: WINDOW_BOTTOM*4/5
 					Font: Bold
 					Background: button-transparent
-				Button@NOD_FACTION:
+				Button@Nod:
 					X: (WINDOW_RIGHT)/2
 					Y: WINDOW_BOTTOM/20
 					Width: (WINDOW_RIGHT)/2
