@@ -34,19 +34,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			rootMenu = widget;
 			rootMenu.Get<LabelWidget>("VERSION_LABEL").Text = Game.ModData.Manifest.Mod.Version;
 
-			var shellmapDecorations = widget.Get("SHELLMAP_DECORATIONS");
-			if (shellmapDecorations != null)
-			{
-				shellmapDecorations.IsVisible = () => menuType != MenuType.None && Game.Settings.Game.ShowShellmap;
-				shellmapDecorations.Get<ImageWidget>("RECBLOCK").IsVisible = () => world.WorldTick / 25 % 2 == 0;
-			}
-
-			var shellmapDisabledDecorations = widget.Get("SHELLMAP_DISABLED_DECORATIONS");
-			if (shellmapDisabledDecorations != null)
-			{
-				shellmapDisabledDecorations.IsVisible = () => !Game.Settings.Game.ShowShellmap;
-			}
-
 			// Menu buttons
 			var mainMenu = widget.Get("MAIN_MENU");
 			mainMenu.IsVisible = () => menuType == MenuType.Main;
