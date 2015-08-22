@@ -22,8 +22,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 {
 	public class CampaignFactionLogic
 	{
-		const string GdiCampaign = "GDI Campaign";
-		const string NodCampaign = "Nod Campaign";
+		static List<Player> players = CampaignProgress.players;
+		
 		readonly Action onStart;
 		readonly VqaPlayerWidget videoPlayer;
 		readonly BackgroundWidget chooseTextBg;
@@ -31,6 +31,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 		bool videoStopped = false;
 		bool campaignStarted = false;
 		string startedCampaign;
+
+		List<string> factionList = new List<string>();
 
 		enum PlayThen
 		{
@@ -48,8 +50,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 		{
 			this.onStart = onStart;
 
-			var gdiButton = widget.Get<ButtonWidget>("GDI_FACTION");
-			var nodButton = widget.Get<ButtonWidget>("NOD_FACTION");
+			var buttonList = new List<ButtonWidget>();
+
+			foreach (var p in players)
+			{
+				if (!factionList.Contains(p.Faction.Name))
+				{
+					factionList.Add(p.Faction.Name);
+				}
+			}
+
+			for (int i = 0; i < factionList.Count; i++ )
+			{
+				buttonList.Add(widget.Get<ButtonWidget>(factionList[i]));
+				buttonList[i].OnClick = () => CallbackFactionButtonOnClick(factionList[i]);
+			}
 			var videoBGPlayer = widget.Get<VqaPlayerWidget>("VIDEO_BG");
 
 			this.videoPlayer = widget.Get<VqaPlayerWidget>("VIDEO");
@@ -66,8 +81,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 			videoPlayer.Load("choose.vqa");
 			videoPlayer.PlayThen(PlayThenMethod);
 
-			gdiButton.OnClick = CallbackFactionGdiButtonOnClick;
-			nodButton.OnClick = CallbackFactionNodButtonOnClick;
+			//gdiButton.OnClick = CallbackFactionGdiButtonOnClick;
+			//nodButton.OnClick = CallbackFactionNodButtonOnClick;
 
 			widget.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
 			{
@@ -122,21 +137,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 			}
 		}
 
-		void CallbackFactionGdiButtonOnClick()
+		void CallbackFactionButtonOnClick(string faction)
 		{
-			CampaignProgress.SaveProgress("GDI", "");
-			startedCampaign = GdiCampaign;
+			
+			CampaignProgress.SaveProgress(faction, "");
+			startedCampaign = faction + " Campaign";
 			Sound.Play("gdiselected.wav");
 			playThen = PlayThen.GDI;
 		}
 
-		void CallbackFactionNodButtonOnClick()
-		{
-			CampaignProgress.SaveProgress("Nod", "");
-			startedCampaign = NodCampaign;
-			Sound.Play("brotherhoodofnodselected.wav");
-			playThen = PlayThen.chooseNOD;
-		}
+		//void CallbackFactionNodButtonOnClick()
+		//{
+		//	CampaignProgress.SaveProgress("Nod", "");
+		//	startedCampaign = NodCampaign;
+		//	Sound.Play("brotherhoodofnodselected.wav");
+		//	playThen = PlayThen.chooseNOD;
+		//}
 
 		void StopVideo()
 		{
