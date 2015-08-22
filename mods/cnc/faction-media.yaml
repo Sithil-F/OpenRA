@@ -1,0 +1,11 @@
+Video:
+	Start:
+		choose.vga
+	Nod:
+		choosenod.vga
+
+Audio:
+	GDI:
+		gdiselected.wav
+	Nod:
+		brotherhoodofnodselected.wav

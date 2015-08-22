@@ -134,14 +134,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 			playThen = PlayThen.GDI;
 		}
 
-		//void CallbackFactionNodButtonOnClick()
-		//{
-		//	CampaignProgress.SaveProgress("Nod", "");
-		//	startedCampaign = NodCampaign;
-		//	Sound.Play("brotherhoodofnodselected.wav");
-		//	playThen = PlayThen.chooseNOD;
-		//}
-
 		void StopVideo()
 		{
 			Sound.MusicVolume = cachedMusicVolume;
