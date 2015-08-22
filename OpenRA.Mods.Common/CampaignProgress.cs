@@ -8,13 +8,14 @@ namespace OpenRA.Mods.Common
 {
 	public class CampaignProgress
 	{
-		static string progressFile = Platform.ResolvePath("^", "cnc-progress.yaml");
+		static string progressFile;
 		public static List<String> factions = new List<String>();
 		static bool saveProgressFlag = false;
-		static string playedMission = "";
+		static string playedMission;
 
 		public static void Init(List<Player> players)
 		{
+			factions.Clear();
 			foreach (var p in players)
 			{
 				if (!factions.Contains(p.Faction.Name))
