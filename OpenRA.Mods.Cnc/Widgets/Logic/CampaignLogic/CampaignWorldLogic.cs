@@ -74,7 +74,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 
 		public void ShowCampaignPreview()
 		{
-			campaignMissionBrowser.SetPreviewContent();
 			campaignPreview.IsVisible = () => true;
 			campaignBrowser.IsVisible = () => false;
 			campaignCongratulation.SetCongratulationVisibility(false);

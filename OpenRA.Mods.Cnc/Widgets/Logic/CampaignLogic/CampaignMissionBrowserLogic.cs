@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 		readonly MapPreviewWidget campaignPreviewWidget;
 		readonly ButtonWidget campaignPreviewContinueButton, campaignPreviewGraficButton;
 
-		MapPreview selectedMapPreview;
+		MapPreview selectedMapPreview, campaignPathPreview;
 		Map nextMap;
 
 		int mapIndex = 0;
@@ -70,6 +70,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 
 			// Campaign preview grafic
 			campaignPreviewWidget = widget.Get<MapPreviewWidget>("CAMPAIGN_PREVIEW_GRAFIC");
+			SetCampaignPathPreview(Game.ModData.MapCache[this.GetNextMap().Uid]);
 
 			campaignPreviewGraficButton = widget.Get<ButtonWidget>("CAMPAIGN_PREVIEW_GRAFIC_BUTTON");
 			campaignPreviewGraficButton.OnClick = campaignWorld.CallbackShowCampaignBrowserOnClick;
@@ -91,6 +92,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 					onExit();
 				}
 			};
+
 		}
 
 		public bool GetCampaignPreviewRequired()
@@ -166,16 +168,14 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
 			this.selectedMapPreview = selectedMapPreview;
 		}
 
-		public void SetPreviewContent()
+		public MapPreview GetCampaignPathPreview()
 		{
-			var campaignPathPreview = new MapPreview(null, null);
-			var campaignPathBitmap = this.GetNextMap().CampaignPathPreview;
+			return this.campaignPathPreview;
+		}
 
-			if (campaignPathBitmap != null)
-			{
-				campaignPathPreview.SetMinimap(new SheetBuilder(SheetType.BGRA).Add(campaignPathBitmap));
-				campaignPreviewWidget.Preview = () => campaignPathPreview;
-			}
+		public void SetCampaignPathPreview(MapPreview campaigPathPreview)
+		{
+			this.campaignPathPreview = campaigPathPreview;
 		}
 
 		void LoadFactionMaps()
