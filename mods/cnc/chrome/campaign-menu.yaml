@@ -35,7 +35,7 @@ Container@CAMPAIGN_MENU:
 							Y: PARENT_RIGHT / 8
 							ImageCollection: logos
 							ImageName: gdi-load
-						Button@CONTINUE_GDI_BUTTON:
+						Button@CONTINUE_FACTION1_BUTTON:
 							X: PARENT_RIGHT / 2 - 70
 							Y: PARENT_BOTTOM - PARENT_BOTTOM / 5
 							Width: 140
@@ -59,7 +59,7 @@ Container@CAMPAIGN_MENU:
 							Y: PARENT_RIGHT / 8
 							ImageCollection: logos
 							ImageName: nod-load
-						Button@CONTINUE_NOD_BUTTON:
+						Button@CONTINUE_FACTION2_BUTTON:
 							X: PARENT_RIGHT / 2 - 70
 							Y: PARENT_BOTTOM - PARENT_BOTTOM / 5
 							Width: 140

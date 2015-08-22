@@ -15,13 +15,10 @@ using System.Linq;
 using System.Net;
 
 using OpenRA.FileSystem;
-using OpenRA.Mods.Common;
-using OpenRA.Mods.Common.Widgets;
-using OpenRA.Mods.Common.Widgets.Logic;
 using OpenRA.Network;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.Cnc.Widgets.Logic.CampaignLogic
+namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 {
 	public class CampaignFactionLogic
 	{
