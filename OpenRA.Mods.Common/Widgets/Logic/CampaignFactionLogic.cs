@@ -21,9 +21,7 @@ using OpenRA.Widgets;
 namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 {
 	public class CampaignFactionLogic
-	{
-		static List<Player> players = CampaignProgress.players;
-		
+	{		
 		readonly Action onStart;
 		readonly VqaPlayerWidget videoPlayer;
 		readonly BackgroundWidget chooseTextBg;
@@ -31,8 +29,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 		bool videoStopped = false;
 		bool campaignStarted = false;
 		string startedCampaign;
-
-		List<string> factionList = new List<string>();
 
 		enum PlayThen
 		{
@@ -47,9 +43,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 
 		[ObjectCreator.UseCtor]
 		public CampaignFactionLogic(Widget widget, Action onStart, Action onExit)
-		{
+		{			
 			this.onStart = onStart;
 
+			var players = CampaignProgress.players;
+			var factionList = new List<string>();
 			var buttonList = new List<ButtonWidget>();
 
 			foreach (var p in players)
@@ -59,11 +57,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 					factionList.Add(p.Faction.Name);
 				}
 			}
-
-			for (int i = 0; i < factionList.Count; i++ )
+			int i = 0;
+			foreach (var f in factionList)
 			{
-				buttonList.Add(widget.Get<ButtonWidget>(factionList[i]));
-				buttonList[i].OnClick = () => CallbackFactionButtonOnClick(factionList[i]);
+				buttonList.Add(widget.Get<ButtonWidget>(f));
+				buttonList[i].OnClick = () => CallbackFactionButtonOnClick(f);
+				i++;
 			}
 			var videoBGPlayer = widget.Get<VqaPlayerWidget>("VIDEO_BG");
 
@@ -80,9 +79,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 			videoBGPlayer.Load("choose.vqa");
 			videoPlayer.Load("choose.vqa");
 			videoPlayer.PlayThen(PlayThenMethod);
-
-			//gdiButton.OnClick = CallbackFactionGdiButtonOnClick;
-			//nodButton.OnClick = CallbackFactionNodButtonOnClick;
 
 			widget.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
 			{
