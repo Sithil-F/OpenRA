@@ -1,7 +1,7 @@
 Container@MENU_BACKGROUND:
 	Width: WINDOW_RIGHT
 	Height: WINDOW_BOTTOM
-	Logic: MainMenuLogic
+	Logic: CncMainMenuLogic
 	Children:
 		Container@SHELLMAP_DECORATIONS:
 			Children:
