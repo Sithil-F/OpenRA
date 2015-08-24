@@ -74,14 +74,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 
 			getStartVideo();
 
-			if (videoStart != null)
+			if (videoStart != null && GlobalFileSystem.Exists(videoStart))
 			{
-				if (GlobalFileSystem.Exists(videoStart))
+				foreach (var faction in factionList)
 				{
-					videoBGPlayer.Load(videoStart);
-					videoPlayer.Load(videoStart);
-					videoPlayer.PlayThen(PlayThenMethod);
+					ImageWidget image = widget.Get<ImageWidget>(faction + "_LOGO");
+					image.Visible = false;
 				}
+				videoBGPlayer.Load(videoStart);
+				videoPlayer.Load(videoStart);
+				videoPlayer.PlayThen(PlayThenMethod);
 			}
 
 			// Hide choose text, if faction is selected
@@ -153,6 +155,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 
 			if (videoFaction != null)
 				playThen = PlayThen.Faction;
+			else if (videoStart == null)
+			{
+				StartCampaign(startedCampaign);
+			}
 			else
 				playThen = PlayThen.Replay;
 		}
