@@ -1,8 +1,9 @@
 Video:
 	Start:
-		choose.vga
+		choose.vqa
 	Nod:
-		choosenod.vga
+		choosenod.vqa
+		nod1pre.vqa
 
 Audio:
 	GDI:

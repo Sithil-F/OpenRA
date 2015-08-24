@@ -30,12 +30,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 		bool campaignStarted = false;
 		string startedCampaign;
 
+		public string videoStart;
+		List<string> videoFaction;
+		string audioFaction;
+		int actualVideo;
+
 		enum PlayThen
 		{
 			Replay,
-			GDI,
-			NODpre,
-			chooseNOD,
+			Faction,
 			Start
 		}
 
@@ -48,6 +51,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 
 			var factionList = CampaignProgress.factions;
 			var buttonList = new List<ButtonWidget>();
+
+			videoStart = null;
+			videoFaction = null;
+			audioFaction = null;
+			actualVideo = 0;
 
 			int i = 0;
 			foreach (var f in factionList)
@@ -64,13 +72,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 			cachedMusicVolume = Sound.MusicVolume;
 			Sound.MusicVolume = 0;
 
+			getStartVideo();
+
+			if (videoStart != null)
+			{
+				if (GlobalFileSystem.Exists(videoStart))
+				{
+					videoBGPlayer.Load(videoStart);
+					videoPlayer.Load(videoStart);
+					videoPlayer.PlayThen(PlayThenMethod);
+				}
+			}
+
 			// Hide choose text, if faction is selected
 			chooseTextBg = widget.Get<BackgroundWidget>("CHOOSE_TEXT_BG");
 			chooseTextBg.Visible = false;
-
-			videoBGPlayer.Load("choose.vqa");
-			videoPlayer.Load("choose.vqa");
-			videoPlayer.PlayThen(PlayThenMethod);
 
 			widget.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
 			{
@@ -84,7 +100,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 				else
 				{
 					StopVideo();
-					if ((playThen != PlayThen.Start || playThen != PlayThen.GDI) && !campaignStarted)
+					if (playThen != PlayThen.Start && !campaignStarted)
 						StartCampaign(startedCampaign);
 				}
 			};
@@ -98,22 +114,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 				switch (playThen)
 				{
 					case PlayThen.Replay:
+						if (startedCampaign != null)
+							playThen = PlayThen.Start;
 						break;
-					case PlayThen.GDI:
-						playThen = PlayThen.Start;
-						break;
-					case PlayThen.chooseNOD:
-						playThen = PlayThen.NODpre;
-						filename = "choosenod.vqa";
+					case PlayThen.Faction:
+						filename = videoFaction[actualVideo];
+						actualVideo++;
 						if (GlobalFileSystem.Exists(filename))
 							videoPlayer.Load(filename);
-						break;
-					case PlayThen.NODpre:
-						filename = "nod1pre.vqa";
-						if (GlobalFileSystem.Exists(filename))
-							videoPlayer.Load(filename);
-						chooseTextBg.Visible = true;
-						playThen = PlayThen.Start;
+						if (actualVideo < videoFaction.Count)
+							playThen = PlayThen.Faction;
+						else
+						{
+							playThen = PlayThen.Start;
+							chooseTextBg.Visible = true;
+						}
 						break;
 					case PlayThen.Start:
 						chooseTextBg.Visible = true;
@@ -130,8 +145,78 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 			
 			CampaignProgress.SaveProgress(faction, "");
 			startedCampaign = faction + " Campaign";
-			Sound.Play("gdiselected.wav");
-			playThen = PlayThen.GDI;
+
+			getFactionMedia(faction);
+
+			if(audioFaction != null)
+				Sound.Play(audioFaction);
+
+			if (videoFaction != null)
+				playThen = PlayThen.Faction;
+			else
+				playThen = PlayThen.Replay;
+		}
+
+		void getStartVideo()
+		{
+			if (Game.ModData.Manifest.FactionMedia.Any())
+			{
+				var yaml = Game.ModData.Manifest.FactionMedia.Select(MiniYaml.FromFile).Aggregate(MiniYaml.MergeLiberal);
+
+				foreach (var mediaType in yaml)
+				{
+					if (mediaType.Key.Equals("Video"))
+					{
+						foreach (var type in mediaType.Value.Nodes)
+						{
+							if (type.Key.Equals("Start"))
+							{
+								if (type.Value.Nodes.Count > 0)
+									videoStart = type.Value.Nodes[0].Key;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		void getFactionMedia(string faction)
+		{
+			if (Game.ModData.Manifest.FactionMedia.Any())
+			{
+				var yaml = Game.ModData.Manifest.FactionMedia.Select(MiniYaml.FromFile).Aggregate(MiniYaml.MergeLiberal);
+
+				foreach (var mediaType in yaml)
+				{
+					if (mediaType.Key.Equals("Video"))
+					{
+						foreach (var type in mediaType.Value.Nodes)
+						{
+							if (type.Key.Equals(faction))
+							{
+								if (type.Value.Nodes != null)
+								{
+									videoFaction = new List<string>();
+									foreach (var factionVideo in type.Value.Nodes)
+										videoFaction.Add(factionVideo.Key);
+								}
+							}
+						}
+					}
+					if (mediaType.Key.Equals("Audio"))
+					{
+						foreach (var type in mediaType.Value.Nodes)
+						{
+							if (type.Key.Equals(faction))
+							{
+								if (type.Value.Nodes.Count > 0)
+									audioFaction = type.Value.Nodes[0].Key;
+								break;
+							}
+						}
+					}
+				}
+			}
 		}
 
 		void StopVideo()

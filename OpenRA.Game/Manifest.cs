@@ -39,7 +39,7 @@ namespace OpenRA
 			Folders, Rules, ServerTraits,
 			Sequences, VoxelSequences, Cursors, Chrome, Assemblies, ChromeLayout,
 			Weapons, Voices, Notifications, Music, Translations, TileSets,
-			ChromeMetrics, MapCompatibility, Missions;
+			ChromeMetrics, MapCompatibility, Missions, FactionMedia;
 
 		public readonly IReadOnlyDictionary<string, string> Packages;
 		public readonly IReadOnlyDictionary<string, string> MapFolders;
@@ -70,7 +70,7 @@ namespace OpenRA
 		readonly string[] reservedModuleNames = { "Metadata", "Folders", "MapFolders", "Packages", "Rules",
 			"Sequences", "VoxelSequences", "Cursors", "Chrome", "Assemblies", "ChromeLayout", "Weapons",
 			"Voices", "Notifications", "Music", "Translations", "TileSets", "ChromeMetrics", "Missions",
-			"ServerTraits", "LoadScreen", "LobbyDefaults", "Fonts", "TileSize", "MaximumTerrainHeight",
+			"FactionMedia",	"ServerTraits", "LoadScreen", "LobbyDefaults", "Fonts", "TileSize", "MaximumTerrainHeight",
 			"TileShape", "SubCells", "SupportsMapsFrom", "SpriteFormats" };
 
 		readonly TypeDictionary modules = new TypeDictionary();
@@ -103,6 +103,7 @@ namespace OpenRA
 			TileSets = YamlList(yaml, "TileSets", true);
 			ChromeMetrics = YamlList(yaml, "ChromeMetrics", true);
 			Missions = YamlList(yaml, "Missions", true);
+			FactionMedia = YamlList(yaml, "FactionMedia", true);
 
 			ServerTraits = YamlList(yaml, "ServerTraits");
 
