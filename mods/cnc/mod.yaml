@@ -205,6 +205,9 @@ Fonts:
 
 Missions:
 	./mods/cnc/missions.yaml
+	
+FactionMedia:
+	./mods/cnc/faction-media.yaml
 
 SupportsMapsFrom: cnc
 
