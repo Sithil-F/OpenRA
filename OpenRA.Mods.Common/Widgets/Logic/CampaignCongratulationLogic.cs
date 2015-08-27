@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Linq;
 
 using OpenRA.Graphics;
 using OpenRA.Widgets;
@@ -62,13 +63,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void SetCongratulationContent()
 		{
-			// TODO: It would be more elegant to read the text from a yaml-file instead of hardcoding it
-			var victoryTextGdi = "Good work Commander! Thanks to your efforts the Global Defence Initiative was victorious." +
-				" Your actions have thrown the brotherhood into disarray and without their leader we should soon be able to completely rid the world of their remnants.";
-			var victoryTextNod = "Well done Brother! Your heroic actions have shown the world truth and freedom." +
-				" Soon we will be free of the GDIs opression. Kane is proud of you!";
-			var faction = CampaignWorldLogic.Campaign.Equals("GDI Campaign");
-			var victoryText = faction ? victoryTextGdi : victoryTextNod;
+			var victoryText = "Congratulations, you have beaten the Campaign!";
+			var yaml = Game.ModData.Manifest.Congratulations.Select(MiniYaml.FromFile).Aggregate(MiniYaml.MergeLiberal);
+			foreach (var entry in yaml)
+			{
+				if ((entry.Key + " Campaign").Equals(CampaignWorldLogic.Campaign))
+					victoryText = entry.Value.Value;
+			}
 
 			victoryText = WidgetUtils.WrapText(victoryText, this.congratulationText.Bounds.Width, this.congratulationTextFont);
 
@@ -77,8 +78,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.congratulationTextPanel.ScrollToTop();
 			this.congratulationTextPanel.Layout.AdjustChildren();
 
-			this.congratulationGdiLogo.IsVisible = () => faction;
-			this.congratulationNodLogo.IsVisible = () => !faction;
+			this.congratulationGdiLogo.IsVisible = () => CampaignWorldLogic.Campaign.Equals("GDI Campaign");
+			this.congratulationNodLogo.IsVisible = () => !CampaignWorldLogic.Campaign.Equals("GDI Campaign");
 		}
 	}
 }
