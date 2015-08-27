@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly LabelWidget congratulationText;
 		readonly ScrollPanelWidget congratulationTextPanel;
 		readonly SpriteFont congratulationTextFont;
-		readonly ContainerWidget congratulationNodLogo, congratulationGdiLogo, campaignCongratulationWidget;
+		readonly ContainerWidget campaignCongratulationWidget;
 
 		public CampaignCongratulationLogic(CampaignWorldLogic campaignWorld, Widget widget, Action onExit)
 		{
