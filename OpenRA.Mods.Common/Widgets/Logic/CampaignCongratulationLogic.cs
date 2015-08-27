@@ -36,9 +36,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.congratulationText = this.congratulationTextPanel.Get<LabelWidget>("CONGRATULATION_TEXT");
 			this.congratulationTextFont = Game.Renderer.Fonts[congratulationText.Font];
 
-			// Congratulation logos
-			this.congratulationGdiLogo = widget.Get<ContainerWidget>("CONGRATULATION_LOGO_GDI");
-			this.congratulationNodLogo = widget.Get<ContainerWidget>("CONGRATULATION_LOGO_NOD");
+			// Congratulation logo
+			foreach (var f in CampaignProgress.factions)
+			{
+				var congratulationLogo = widget.Get<ContainerWidget>("CONGRATULATION_LOGO_" + f.ToUpper());
+				if (!(f + " Campaign").Equals(CampaignWorldLogic.Campaign))
+					congratulationLogo .IsVisible = () => false;
+			}
 
 			// Congratulation replay button
 			this.campaignCongratulationContinueButton = widget.Get<ButtonWidget>("CAMPAIGN_CONGRATULATION_CONTINUE_BUTTON");
@@ -77,9 +81,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.congratulationText.Bounds.Height = this.congratulationTextFont.Measure(victoryText).Y;
 			this.congratulationTextPanel.ScrollToTop();
 			this.congratulationTextPanel.Layout.AdjustChildren();
-
-			this.congratulationGdiLogo.IsVisible = () => CampaignWorldLogic.Campaign.Equals("GDI Campaign");
-			this.congratulationNodLogo.IsVisible = () => !CampaignWorldLogic.Campaign.Equals("GDI Campaign");
 		}
 	}
 }
