@@ -967,3 +967,7 @@ mainmenu-border: dialog.png
 dropdown: dialog.png
     separator: 512,1,1,19
     observer-separator: 768,256,1,19
+	
+choose-logos: factionlogos.png
+	soviet: 0,0,166,159
+	allies:	170,0,166,132
