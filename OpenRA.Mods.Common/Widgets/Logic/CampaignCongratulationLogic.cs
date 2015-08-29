@@ -75,6 +75,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					victoryText = entry.Value.Value;
 			}
 
+			victoryText = victoryText.Replace("\\n", "\n");
 			victoryText = WidgetUtils.WrapText(victoryText, this.congratulationText.Bounds.Width, this.congratulationTextFont);
 
 			this.congratulationText.Text = victoryText;
