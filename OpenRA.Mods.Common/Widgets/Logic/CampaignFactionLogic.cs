@@ -24,11 +24,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 	{		
 		readonly Action onStart;
 		readonly VqaPlayerWidget videoPlayer;
+		readonly VqaPlayerWidget videoBGPlayer;
+		readonly ImageWidget chooseFactionBanner;
+		//readonly BackgroundWidget chooseTextBg;
 		readonly float cachedMusicVolume;
 		bool videoStopped = false;
 		bool campaignStarted = false;
 		string startedCampaign;
 
+		List<ButtonWidget> buttonList = new List<ButtonWidget>();
+		List<ImageWidget> imageList = new List<ImageWidget>();
+		List<string> factionList = CampaignProgress.factions;
 		public string videoStart;
 		List<string> videoFaction;
 		string audioFaction;
@@ -48,9 +54,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 		{			
 			this.onStart = onStart;
 
-			var factionList = CampaignProgress.factions;
-			var buttonList = new List<ButtonWidget>();
-
 			videoStart = null;
 			videoFaction = null;
 			audioFaction = null;
@@ -61,9 +64,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 			{
 				buttonList.Add(widget.Get<ButtonWidget>(f));
 				buttonList[i].OnClick = () => CallbackFactionButtonOnClick(f);
+				imageList.Add(widget.Get<ImageWidget>(f + "_LOGO"));
 				i++;
 			}
-			var videoBGPlayer = widget.Get<VqaPlayerWidget>("VIDEO_BG");
+			videoBGPlayer = widget.Get<VqaPlayerWidget>("VIDEO_BG");
+			chooseFactionBanner = widget.Get<ImageWidget>("CHOOSE_FACTION_IMAGE");
 
 			this.videoPlayer = widget.Get<VqaPlayerWidget>("VIDEO");
 
@@ -75,9 +80,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 
 			if (videoStart != null && GlobalFileSystem.Exists(videoStart))
 			{
-				foreach (var faction in factionList)
+				foreach (var image in imageList)
 				{
-					ImageWidget image = widget.Get<ImageWidget>(faction + "_LOGO");
 					image.Visible = false;
 				}
 				videoBGPlayer.Load(videoStart);
@@ -137,7 +141,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 
 		void CallbackFactionButtonOnClick(string faction)
 		{
-			
+			foreach(var button in buttonList)
+			{
+				button.IsDisabled = () => true;
+			}
+			if (chooseFactionBanner != null)
+				chooseFactionBanner.Visible = false;
 			CampaignProgress.SaveProgress(faction, "");
 			startedCampaign = faction + " Campaign";
 
@@ -146,14 +155,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 			if(audioFaction != null)
 				Sound.Play(audioFaction);
 
-			if (videoFaction != null)
-				playThen = PlayThen.Faction;
-			else if (videoStart == null)
+			if (videoStart == null)
 			{
+				System.Threading.Thread.Sleep(3000);
 				StartCampaign(startedCampaign);
 			}
 			else
-				playThen = PlayThen.Replay;
+			{
+				if (videoFaction != null)
+					playThen = PlayThen.Faction;
+				else
+					playThen = PlayThen.Replay;
+			}
 		}
 
 		void getStartVideo()
@@ -220,6 +233,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 
 		void StopVideo()
 		{
+			videoBGPlayer.Visible = false;
+			videoPlayer.Visible = false;
 			Sound.MusicVolume = cachedMusicVolume;
 			videoPlayer.Stop();
 			videoStopped = true;
@@ -248,6 +263,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 
 		void StartCampaign(string faction)
 		{
+			if(videoStart == null)
+			{
+				foreach(var image in imageList)
+				{
+					image.Visible = false;
+				}
+			}
 			campaignStarted = true;
 			OrderManager om = null;
 
