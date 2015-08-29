@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 				i++;
 			}
 			videoBGPlayer = widget.Get<VqaPlayerWidget>("VIDEO_BG");
-			chooseFactionBanner = widget.Get<ImageWidget>("CHOOSE_FACTION_IMAGE");
+			chooseFactionBanner = widget.GetOrNull<ImageWidget>("CHOOSE_FACTION_IMAGE");
 
 			this.videoPlayer = widget.Get<VqaPlayerWidget>("VIDEO");
 
