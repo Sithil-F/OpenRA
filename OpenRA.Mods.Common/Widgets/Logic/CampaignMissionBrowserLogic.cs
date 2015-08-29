@@ -34,8 +34,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		bool campaignPreviewRequired = false;
 		bool congratsFlag = false;
-		bool lastMissionSuccessfullyPlayedGDI = false;
-		bool lastMissionSuccessfullyPlayedNod = false;
+		Dictionary<string,bool> lastMissionSuccessfullyPlayed = new Dictionary<string,bool>();
 
 		List<Map> factionMaps = new List<Map>();	// All maps of a faction
 		List<Map> nextMaps = new List<Map>();		// All actual playable maps
@@ -44,6 +43,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			this.campaignWorld = campaignWorld;
 
+			foreach (var f in CampaignProgress.factions)
+				lastMissionSuccessfullyPlayed.Add(f, false);
+			
 			// Preview label
 			previewMenuTitle = widget.Get<LabelWidget>("PREVIEW_MENU_TITLE");
 
@@ -130,15 +132,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			this.CheckCampaignProgressForPreview();
 
-			// TODO
-			if ((CampaignWorldLogic.Campaign.Equals("GDI Campaign") && lastMissionSuccessfullyPlayedGDI) ||
-				(CampaignWorldLogic.Campaign.Equals("Nod Campaign") && lastMissionSuccessfullyPlayedNod))
+			var success = false;
+			foreach (var f in CampaignProgress.factions)
+			{
+				if (CampaignWorldLogic.Campaign.Equals(f + " Campaign") && lastMissionSuccessfullyPlayed[f])
+				{
+					success = true;
+					break;
+				}
+
+			}
+
+			if (success)
 				campaignWorld.ShowCongratulations();
 			else if (campaignPreviewRequired)
 			{
 				SetCampaignPathPreview(Game.ModData.MapCache[this.GetNextMap().Uid]);
 				campaignWorld.ShowCampaignPreview();
-			}		
+			}
 			else
 				campaignWorld.CallbackShowCampaignBrowserOnClick();
 		}
@@ -204,10 +215,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void LoadCurrentMissions()
 		{
-			if (CampaignWorldLogic.Campaign.Equals("GDI Campaign"))
-				lastMission = CampaignProgress.GetMission("GDI");
-			else
-				lastMission = CampaignProgress.GetMission("Nod");
+			foreach (var f in CampaignProgress.factions)
+			{
+				if (CampaignWorldLogic.Campaign.Equals(f + " Campaign"))
+					lastMission = CampaignProgress.GetMission(f);
+			}
 			if (lastMission.Length > 0)
 			{
 				var maps = factionMaps
@@ -244,10 +256,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (lastMission.Length > 0 && nextMap == null)
 			{
 				congratsFlag = true;
-				if (CampaignWorldLogic.Campaign.Equals("GDI Campaign"))
-					lastMissionSuccessfullyPlayedGDI = true;
-				else
-					lastMissionSuccessfullyPlayedNod = true;
+				foreach (var f in CampaignProgress.factions)
+				{
+					if (CampaignWorldLogic.Campaign.Equals(f + " Campaign"))
+						lastMissionSuccessfullyPlayed[f] = true;
+				}
 				LoadMission(lastMission);
 				SelectFirstMission();
 			}

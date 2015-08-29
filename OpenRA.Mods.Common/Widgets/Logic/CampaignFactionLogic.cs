@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 	{		
 		readonly Action onStart;
 		readonly VqaPlayerWidget videoPlayer;
-		readonly BackgroundWidget chooseTextBg;
+		//readonly BackgroundWidget chooseTextBg;
 		readonly float cachedMusicVolume;
 		bool videoStopped = false;
 		bool campaignStarted = false;
@@ -74,19 +74,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 
 			getStartVideo();
 
-			if (videoStart != null)
+			if (videoStart != null && GlobalFileSystem.Exists(videoStart))
 			{
-				if (GlobalFileSystem.Exists(videoStart))
+				foreach (var faction in factionList)
 				{
-					videoBGPlayer.Load(videoStart);
-					videoPlayer.Load(videoStart);
-					videoPlayer.PlayThen(PlayThenMethod);
+					ImageWidget image = widget.Get<ImageWidget>(faction + "_LOGO");
+					image.Visible = false;
 				}
+				videoBGPlayer.Load(videoStart);
+				videoPlayer.Load(videoStart);
+				videoPlayer.PlayThen(PlayThenMethod);
 			}
 
 			// Hide choose text, if faction is selected
-			chooseTextBg = widget.Get<BackgroundWidget>("CHOOSE_TEXT_BG");
-			chooseTextBg.Visible = false;
+			//chooseTextBg = widget.Get<BackgroundWidget>("CHOOSE_TEXT_BG");
+			//chooseTextBg.Visible = false;
 
 			widget.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
 			{
@@ -127,11 +129,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 						else
 						{
 							playThen = PlayThen.Start;
-							chooseTextBg.Visible = true;
+							//chooseTextBg.Visible = true;
 						}
 						break;
 					case PlayThen.Start:
-						chooseTextBg.Visible = true;
+						//chooseTextBg.Visible = true;
 						StartCampaign(startedCampaign);
 						return;
 				}
@@ -153,6 +155,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 
 			if (videoFaction != null)
 				playThen = PlayThen.Faction;
+			else if (videoStart == null)
+			{
+				StartCampaign(startedCampaign);
+			}
 			else
 				playThen = PlayThen.Replay;
 		}

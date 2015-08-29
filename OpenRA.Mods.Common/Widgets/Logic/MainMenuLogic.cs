@@ -109,7 +109,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						Game.OpenWindow("CAMPAIGN_FACTION", new WidgetArgs
 						{
-							{ "onExit", () => menuType = MenuType.Singleplayer },
+							{ "onExit", () => {
+								menuType = MenuType.Singleplayer; 
+								CampaignProgress.ResetSaveProgressFlag();} },
 							{ "onStart", RemoveShellmapUI }
 						});
 					}
@@ -117,7 +119,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						Game.OpenWindow("CAMPAIGN_MENU", new WidgetArgs
 						{
-							{ "onExit", () => menuType = MenuType.Singleplayer },
+							{ "onExit", () => {
+								menuType = MenuType.Singleplayer; 
+								CampaignProgress.ResetSaveProgressFlag();} },
 							{ "onStart", RemoveShellmapUI }
 						});
 					}
