@@ -4,8 +4,8 @@ shellmap: reticle.png
 shellmapbits: chrome.png
 	record: 288,16,16,16
 	
-choosefaction: choose.png
-	choosetext: 0,0,1024,128
+choosefaction: choosescreen.png
+	choosetext: 0,960,512,64
 
 logos: chrome.png
 	install:128,0,128,128

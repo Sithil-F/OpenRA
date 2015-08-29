@@ -35,16 +35,9 @@ Container@CAMPAIGN_MENU:
 							Y: PARENT_RIGHT / 8
 							ImageCollection: logos
 							ImageName: gdi-load
-						Button@NEW_GDI_BUTTON:
-							X: PARENT_RIGHT / 2 - 70
-							Y: PARENT_BOTTOM - PARENT_BOTTOM / 8 - 40
-							Width: 140
-							Height: 35
-							Text: New GDI Campaign
-							Font: Bold
 						Button@CONTINUE_GDI_BUTTON:
 							X: PARENT_RIGHT / 2 - 70
-							Y: PARENT_BOTTOM - PARENT_BOTTOM / 8
+							Y: PARENT_BOTTOM - PARENT_BOTTOM / 5
 							Width: 140
 							Height: 35
 							Text: Continue GDI
@@ -65,17 +58,10 @@ Container@CAMPAIGN_MENU:
 							X: PARENT_RIGHT / 2 - 126
 							Y: PARENT_BOTTOM / 8
 							ImageCollection: logos
-							ImageName: nod-load						
-						Button@NEW_NOD_BUTTON:
-							X: PARENT_RIGHT / 2 - 70
-							Y: PARENT_BOTTOM - PARENT_BOTTOM / 8 - 40
-							Width: 140
-							Height: 35
-							Text: New Nod Campaign
-							Font: Bold
+							ImageName: nod-load
 						Button@CONTINUE_NOD_BUTTON:
 							X: PARENT_RIGHT / 2 - 70
-							Y: PARENT_BOTTOM - PARENT_BOTTOM / 8
+							Y: PARENT_BOTTOM - PARENT_BOTTOM / 5
 							Width: 140
 							Height: 35
 							Text: Continue Nod
