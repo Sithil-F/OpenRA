@@ -205,6 +205,12 @@ Fonts:
 
 Missions:
 	./mods/ra/missions.yaml
+	
+FactionMedia:
+	./mods/ra/faction-media.yaml
+	
+Congratulations:
+	./mods/ra/congratulationstext.yaml
 
 SupportsMapsFrom: ra
 

@@ -28,16 +28,9 @@ Container@CAMPAIGN_MENU:
 							Y: PARENT_BOTTOM / 8
 							ImageCollection: choose-logos
 							ImageName: allies
-						Button@NEW_ALLIES_BUTTON:
-							X: PARENT_RIGHT / 2 - 80
-							Y: PARENT_BOTTOM / 8 + 180
-							Width: 160
-							Height: 35
-							Text: New Allies Campaign
-							Font: Bold
 						Button@CONTINUE_ALLIES_BUTTON:
 							X: PARENT_RIGHT / 2 - 80
-							Y: PARENT_BOTTOM / 8 + 180 + 40
+							Y: PARENT_BOTTOM / 8 + 200
 							Width: 160
 							Height: 35
 							Text: Continue Allies
@@ -54,16 +47,9 @@ Container@CAMPAIGN_MENU:
 							Y: PARENT_BOTTOM / 8
 							ImageCollection: choose-logos
 							ImageName: soviet
-						Button@NEW_SOVIET_BUTTON:
-							X: PARENT_RIGHT / 2 - 80
-							Y: PARENT_BOTTOM / 8 + 180
-							Width: 160
-							Height: 35
-							Text: New Soviet Campaign
-							Font: Bold
 						Button@CONTINUE_SOVIET_BUTTON:
 							X: PARENT_RIGHT / 2 - 80
-							Y: PARENT_BOTTOM / 8 + 180 + 40
+							Y: PARENT_BOTTOM / 8 + 200
 							Width: 160
 							Height: 35
 							Text: Continue Soviet
