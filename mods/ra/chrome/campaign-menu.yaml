@@ -70,19 +70,19 @@ Container@CAMPAIGN_MENU:
 							Font: Bold
 							#Background: button-transparent
 							Key: s
-				Button@NEW_BUTTON:
-					X: PARENT_RIGHT - 140
-					Y: PARENT_BOTTOM - 1
-					Width: 140
-					Height: 35
-					Text: New
-					Font: Bold
-					Key: Return
 				Button@BACK_BUTTON:
-					X: 0
-					Y: PARENT_BOTTOM - 1
+					X: 15
+					Y: PARENT_BOTTOM - 35 - 15
 					Width: 140
 					Height: 35
 					Text: Back
 					Font: Bold
 					Key: Escape
+				Button@NEW_BUTTON:
+					X: PARENT_RIGHT - 140 - 15
+					Y: PARENT_BOTTOM - 35 - 15
+					Width: 140
+					Height: 35
+					Text: New
+					Font: Bold
+					Key: Return
