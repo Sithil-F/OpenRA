@@ -31,10 +31,10 @@ Container@CAMPAIGN_MENU:
 							Height: PARENT_BOTTOM - 2
 							Background: panel-allblack
 						Image@GDI_LOGO:
-							X: PARENT_RIGHT / 2 - 126
-							Y: PARENT_RIGHT / 8
-							ImageCollection: logos
-							ImageName: gdi-load
+							X: PARENT_RIGHT / 2 - 103
+							Y: PARENT_BOTTOM / 8
+							ImageCollection: choose-logos
+							ImageName: gdi
 						Button@CONTINUE_GDI_BUTTON:
 							X: PARENT_RIGHT / 2 - 70
 							Y: PARENT_BOTTOM - PARENT_BOTTOM / 5
@@ -42,7 +42,6 @@ Container@CAMPAIGN_MENU:
 							Height: 35
 							Text: Continue GDI
 							Font: Bold
-							#Background: button-transparent
 							Key: g
 				Container@CAMPAIGN_NOD:
 					X: PARENT_RIGHT - PARENT_RIGHT / 2
@@ -55,10 +54,10 @@ Container@CAMPAIGN_MENU:
 							Height: PARENT_BOTTOM - 2
 							Background: panel-allblack
 						Image@NOD_LOGO:
-							X: PARENT_RIGHT / 2 - 126
+							X: PARENT_RIGHT / 2 - 121
 							Y: PARENT_BOTTOM / 8
-							ImageCollection: logos
-							ImageName: nod-load
+							ImageCollection: choose-logos
+							ImageName: nod
 						Button@CONTINUE_NOD_BUTTON:
 							X: PARENT_RIGHT / 2 - 70
 							Y: PARENT_BOTTOM - PARENT_BOTTOM / 5
