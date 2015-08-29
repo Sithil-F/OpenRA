@@ -58,9 +58,9 @@ Container@CAMPAIGN_FACTION:
 			Height: 128
 			ImageCollection: choosefaction
 			ImageName: choosetext
-		Background@CHOOSE_TEXT_BG:
-			X: (WINDOW_RIGHT/2) - 512
-			Y: WINDOW_BOTTOM*4/5 + WINDOW_BOTTOM/20
-			Width: 1024
-			Height: 128
-			Background: panel-allblack
+#		Background@CHOOSE_TEXT_BG:
+#			X: (WINDOW_RIGHT/2) - 512
+#			Y: WINDOW_BOTTOM*4/5 + WINDOW_BOTTOM/20
+#			Width: 1024
+#			Height: 128
+#			Background: panel-allblack

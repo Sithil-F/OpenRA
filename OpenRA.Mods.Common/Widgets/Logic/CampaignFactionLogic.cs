@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 	{		
 		readonly Action onStart;
 		readonly VqaPlayerWidget videoPlayer;
-		readonly BackgroundWidget chooseTextBg;
+		//readonly BackgroundWidget chooseTextBg;
 		readonly float cachedMusicVolume;
 		bool videoStopped = false;
 		bool campaignStarted = false;
@@ -87,8 +87,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 			}
 
 			// Hide choose text, if faction is selected
-			chooseTextBg = widget.Get<BackgroundWidget>("CHOOSE_TEXT_BG");
-			chooseTextBg.Visible = false;
+			//chooseTextBg = widget.Get<BackgroundWidget>("CHOOSE_TEXT_BG");
+			//chooseTextBg.Visible = false;
 
 			widget.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
 			{
@@ -129,11 +129,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 						else
 						{
 							playThen = PlayThen.Start;
-							chooseTextBg.Visible = true;
+							//chooseTextBg.Visible = true;
 						}
 						break;
 					case PlayThen.Start:
-						chooseTextBg.Visible = true;
+						//chooseTextBg.Visible = true;
 						StartCampaign(startedCampaign);
 						return;
 				}
