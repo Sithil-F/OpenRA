@@ -10,7 +10,7 @@ Container@CAMPAIGN_FACTION:
 				Background@BG:
 					Width: WINDOW_RIGHT
 					Height: WINDOW_BOTTOM
-					Background: panel-allblack
+					Background: noise-background
 				VqaPlayer@VIDEO_BG:
 					Y: WINDOW_BOTTOM/20
 					Width: WINDOW_RIGHT
@@ -27,10 +27,10 @@ Container@CAMPAIGN_FACTION:
 					Font: Bold
 					Background: button-transparent	
 				Image@GDI_LOGO:
-					X: (WINDOW_RIGHT)*1/8
-					Y: WINDOW_BOTTOM*1/5
-					ImageCollection: logos
-					ImageName: gdi-load
+					X: WINDOW_RIGHT/4 - 109
+					Y: WINDOW_BOTTOM/2 - 109
+					ImageCollection: choose-logos
+					ImageName: gdi
 				Button@Nod:
 					X: (WINDOW_RIGHT)/2
 					Y: WINDOW_BOTTOM/20
@@ -39,10 +39,10 @@ Container@CAMPAIGN_FACTION:
 					Font: Bold
 					Background: button-transparent
 				Image@Nod_LOGO:
-					X: (WINDOW_RIGHT)*5/8
-					Y: WINDOW_BOTTOM*1/5
-					ImageCollection: logos
-					ImageName: nod-load
+					X: WINDOW_RIGHT* 3/4 - 129
+					Y: WINDOW_BOTTOM/2 -104
+					ImageCollection: choose-logos
+					ImageName: nod
 				Button@BACK_BUTTON:
 					X: ( WINDOW_RIGHT - WIDTH ) / 2
 					Y: WINDOW_BOTTOM - HEIGHT - 10
