@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Linq;
 
 using OpenRA.Graphics;
 using OpenRA.Widgets;
@@ -23,7 +24,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly LabelWidget congratulationText;
 		readonly ScrollPanelWidget congratulationTextPanel;
 		readonly SpriteFont congratulationTextFont;
-		readonly ContainerWidget congratulationNodLogo, congratulationGdiLogo, campaignCongratulationWidget;
+		readonly ContainerWidget campaignCongratulationWidget;
 
 		public CampaignCongratulationLogic(CampaignWorldLogic campaignWorld, Widget widget, Action onExit)
 		{
@@ -35,9 +36,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.congratulationText = this.congratulationTextPanel.Get<LabelWidget>("CONGRATULATION_TEXT");
 			this.congratulationTextFont = Game.Renderer.Fonts[congratulationText.Font];
 
-			// Congratulation logos
-			this.congratulationGdiLogo = widget.Get<ContainerWidget>("CONGRATULATION_LOGO_GDI");
-			this.congratulationNodLogo = widget.Get<ContainerWidget>("CONGRATULATION_LOGO_NOD");
+			// Congratulation logo
+			foreach (var f in CampaignProgress.factions)
+			{
+				var congratulationLogo = widget.Get<ContainerWidget>("CONGRATULATION_LOGO_" + f.ToUpper());
+				if (!(f + " Campaign").Equals(CampaignWorldLogic.Campaign))
+					congratulationLogo .IsVisible = () => false;
+			}
 
 			// Congratulation replay button
 			this.campaignCongratulationContinueButton = widget.Get<ButtonWidget>("CAMPAIGN_CONGRATULATION_CONTINUE_BUTTON");
@@ -62,23 +67,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void SetCongratulationContent()
 		{
-			// TODO: It would be more elegant to read the text from a yaml-file instead of hardcoding it
-			var victoryTextGdi = "Good work Commander! Thanks to your efforts the Global Defence Initiative was victorious." +
-				" Your actions have thrown the brotherhood into disarray and without their leader we should soon be able to completely rid the world of their remnants.";
-			var victoryTextNod = "Well done Brother! Your heroic actions have shown the world truth and freedom." +
-				" Soon we will be free of the GDIs opression. Kane is proud of you!";
-			var faction = CampaignWorldLogic.Campaign.Equals("GDI Campaign");
-			var victoryText = faction ? victoryTextGdi : victoryTextNod;
+			var victoryText = "Congratulations, you have beaten the Campaign!";
+			var yaml = Game.ModData.Manifest.Congratulations.Select(MiniYaml.FromFile).Aggregate(MiniYaml.MergeLiberal);
+			foreach (var entry in yaml)
+			{
+				if ((entry.Key + " Campaign").Equals(CampaignWorldLogic.Campaign))
+					victoryText = entry.Value.Value;
+			}
 
+			victoryText = victoryText.Replace("\\n", "\n");
 			victoryText = WidgetUtils.WrapText(victoryText, this.congratulationText.Bounds.Width, this.congratulationTextFont);
 
 			this.congratulationText.Text = victoryText;
 			this.congratulationText.Bounds.Height = this.congratulationTextFont.Measure(victoryText).Y;
 			this.congratulationTextPanel.ScrollToTop();
 			this.congratulationTextPanel.Layout.AdjustChildren();
-
-			this.congratulationGdiLogo.IsVisible = () => faction;
-			this.congratulationNodLogo.IsVisible = () => !faction;
 		}
 	}
 }
