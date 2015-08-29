@@ -225,64 +225,54 @@ Container@CAMPAIGN_WORLD:
 					Text: Congratulations
 					Font: BigBold
 				Background@CAMPAIGN_CONGRATULATION_BG:
-					Width: WINDOW_RIGHT / 2
-					Height: WINDOW_BOTTOM / 2
-					Background: panel-black
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
 				Button@CAMPAIGN_CONGRATULATION_BACK_BUTTON:
-					X: PARENT_RIGHT - PARENT_RIGHT
-					Y: PARENT_BOTTOM - 1
+					X: 15
+					Y: PARENT_BOTTOM - 35 - 15
 					Width: 140
 					Height: 35
 					Text: Back
 					Font: Bold
 					Key: Escape
 				Button@CAMPAIGN_CONGRATULATION_CONTINUE_BUTTON:
-					X: PARENT_RIGHT - 160
-					Y: PARENT_BOTTOM - 1
+					X: PARENT_RIGHT - 160 - 15
+					Y: PARENT_BOTTOM - 35 - 15
 					Width: 160
 					Height: 35
 					Text: Replay final Mission
 					Font: Bold
 					Key: Return
 				ScrollPanel@CONGRATULATION_TEXT_PANEL:
-					Width: (PARENT_RIGHT / 2)
-					Height: PARENT_BOTTOM
-					Background: panel-black
+					X: 15
+					Y: 15
+					Width: (PARENT_RIGHT / 2) - 15
+					Height: PARENT_BOTTOM - 70
+					Background: dialog3
 					Children:
 						Label@CONGRATULATION_TEXT:
 							X: 20
 							Y: PARENT_BOTTOM / 2
 							Width: PARENT_RIGHT - 60
-							#VAlign: Top
-				Container@CONGRATULATION_LOGO_GDI:
-					X: (PARENT_RIGHT/2) + 1
-					Width: (PARENT_RIGHT / 2) - 2
-					Height: PARENT_BOTTOM
+				Container@CONGRATULATION_LOGO_ALLIES:
+					X: (PARENT_RIGHT/2)
+					Y: 15
+					Width: (PARENT_RIGHT / 2) - 15
+					Height: PARENT_BOTTOM - 70
 					Children:
-						Background:
-							X: 1
-							Y: 1
-							Width: PARENT_RIGHT
-							Height: PARENT_BOTTOM - 2
-							Background: panel-allblack
-						Image@GDI_LOGO:
-							X: PARENT_RIGHT / 2 - 122
-							Y: PARENT_BOTTOM / 2 - 160
-							ImageCollection: medals
-							ImageName: gdi-medal
-				Container@CONGRATULATION_LOGO_NOD:
-					X: (PARENT_RIGHT/2) + 1
-					Width: (PARENT_RIGHT / 2) - 2
-					Height: PARENT_BOTTOM
+						Image@ALLIES_LOGO:
+							X: PARENT_RIGHT / 2 - 86
+							Y: PARENT_BOTTOM / 2 - 86
+							ImageCollection: choose-logos
+							ImageName: allies
+				Container@CONGRATULATION_LOGO_SOVIET:
+					X: (PARENT_RIGHT/2)
+					Y: 15
+					Width: (PARENT_RIGHT / 2) - 15
+					Height: PARENT_BOTTOM - 70
 					Children:
-						Background:
-							X: 1
-							Y: 1
-							Width: PARENT_RIGHT
-							Height: PARENT_BOTTOM - 2
-							Background: panel-allblack
-						Image@NOD_LOGO:
-							X: PARENT_RIGHT / 2 - 115
-							Y: PARENT_BOTTOM / 2 - 169
-							ImageCollection: medals
-							ImageName: nod-medal
+						Image@ALLIES_LOGO:
+							X: PARENT_RIGHT / 2 - 86
+							Y: PARENT_BOTTOM / 2 - 86
+							ImageCollection: choose-logos
+							ImageName: soviet

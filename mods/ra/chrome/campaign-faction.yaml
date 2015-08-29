@@ -44,8 +44,8 @@ Container@CAMPAIGN_FACTION:
 				Button@BACK_BUTTON:
 					X: ( WINDOW_RIGHT - WIDTH ) / 2
 					Y: WINDOW_BOTTOM - HEIGHT - 10
-					Width: 0#140
-					Height: 0#35
+					Width: 0
+					Height: 0
 					Font: Bold
 					Key: escape
 					#Background: button-transparent

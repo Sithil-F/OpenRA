@@ -9,7 +9,7 @@ Container@CAMPAIGN_MENU:
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM
 		Label@CAMPAIGN_MENU_TITLE:
-			Y: 0-30
+			Y: 0 - 25
 			Width: PARENT_RIGHT
 			Text: Campaign Menu
 			Align: Center
@@ -35,7 +35,6 @@ Container@CAMPAIGN_MENU:
 							Height: 35
 							Text: Continue Allies
 							Font: Bold
-							#Background: button-transparent
 							Key: a
 				Container@CAMPAIGN_SOVIET:
 					X: PARENT_RIGHT - PARENT_RIGHT / 2
@@ -54,7 +53,6 @@ Container@CAMPAIGN_MENU:
 							Height: 35
 							Text: Continue Soviet
 							Font: Bold
-							#Background: button-transparent
 							Key: s
 				Button@BACK_BUTTON:
 					X: 15
