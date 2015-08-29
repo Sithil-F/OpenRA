@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common
 			factions.Clear();
 			foreach (var p in players)
 			{
-				if (!factions.Contains(p.Faction.Name))
+				if (!factions.Contains(p.Faction.Name) && !p.NonCombatant)
 					factions.Add(p.Faction.Name);
 			}
 			ModMetadata initialMod = null;
