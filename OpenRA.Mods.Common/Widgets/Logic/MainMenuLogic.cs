@@ -81,6 +81,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			singleplayerMenu.IsVisible = () => menuType == MenuType.Singleplayer;
 
 			CampaignProgress.Init(world.Players);
+
 			var factionList = new List<String>();
 			var missionPlayed = false;
 
@@ -98,9 +99,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 			}
 
-			var campaignButton = singleplayerMenu.Get<ButtonWidget>("CAMPAIGN_BUTTON");
+			var campaignButton = singleplayerMenu.GetOrNull<ButtonWidget>("CAMPAIGN_BUTTON");
 			if (campaignButton != null)
 			{
+				if (CampaignProgress.factions.Count == 0)
+					campaignButton.Disabled = true;
+
 				campaignButton.OnClick = () =>
 				{
 					CampaignProgress.SetSaveProgressFlag();
