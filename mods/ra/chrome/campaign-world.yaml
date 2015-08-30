@@ -206,7 +206,7 @@ Container@CAMPAIGN_WORLD:
 							Height: PARENT_BOTTOM
 							Children:
 								Button@PLAY_BUTTON:
-									X: 15
+									X: PARENT_RIGHT - 15 - WIDTH
 									Y: 15
 									Width: 140
 									Height: 35
@@ -214,7 +214,7 @@ Container@CAMPAIGN_WORLD:
 									Font: Bold
 									Key: Return
 								Button@CAMPAIGN_BROWSER_BACK_BUTTON:
-									X: PARENT_RIGHT - 15 - WIDTH
+									X: 15
 									Y: 15
 									Width: 140
 									Height: 35
