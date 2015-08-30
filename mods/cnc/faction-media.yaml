@@ -1,6 +1,6 @@
 Video:
 	Start:
-		choose.vqa
+		#choose.vqa
 	Nod:
 		choosenod.vqa
 		nod1pre.vqa

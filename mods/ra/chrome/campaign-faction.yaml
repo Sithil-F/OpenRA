@@ -1,0 +1,51 @@
+Container@CAMPAIGN_FACTION:
+	Logic: CampaignFactionLogic
+	Width: WINDOW_RIGHT
+	Height: WINDOW_BOTTOM
+	Children:
+		Container@CAMPAIGN_VIDEO:
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM
+			Children:
+				Background@BG:
+					Width: WINDOW_RIGHT
+					Height: WINDOW_BOTTOM
+					Background: noise-background
+				VqaPlayer@VIDEO_BG:
+					Width: WINDOW_RIGHT
+					Height: WINDOW_BOTTOM
+				VqaPlayer@VIDEO:
+					Width: WINDOW_RIGHT
+					Height: WINDOW_BOTTOM
+				Button@Allies:
+					X: 0
+					Y: 0
+					Width: (WINDOW_RIGHT)/2
+					Height: WINDOW_BOTTOM
+					Font: Bold
+					Background: button-transparent	
+				Image@Allies_LOGO:
+					X: WINDOW_RIGHT/4 - 86
+					Y: WINDOW_BOTTOM/2 - 86
+					ImageCollection: choose-logos
+					ImageName: allies
+				Button@Soviet:
+					X: (WINDOW_RIGHT)/2
+					Y: 0
+					Width: (WINDOW_RIGHT)/2
+					Height: WINDOW_BOTTOM
+					Font: Bold
+					Background: button-transparent
+				Image@Soviet_LOGO:
+					X: WINDOW_RIGHT* 3/4 - 86
+					Y: WINDOW_BOTTOM/2 - 86
+					ImageCollection: choose-logos
+					ImageName: soviet
+				Button@BACK_BUTTON:
+					X: ( WINDOW_RIGHT - WIDTH ) / 2
+					Y: WINDOW_BOTTOM - HEIGHT - 10
+					Width: 0
+					Height: 0
+					Font: Bold
+					Key: escape
+					#Background: button-transparent
