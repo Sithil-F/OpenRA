@@ -78,7 +78,7 @@ namespace OpenRA
 		public int DownloadPercentage { get; private set; }
 
 		Sprite minimap, campaignPathPreview;
-		bool generatingMinimap, generatingCampaignPathPreview;
+		bool generatingMinimap, switchedPreview;
 		public Sprite GetMinimap()
 		{
 			if (minimap != null)
@@ -99,24 +99,31 @@ namespace OpenRA
 			generatingMinimap = false;
 		}
 
-		public Sprite GetCampaignPathPreview()
-		{
-			if (campaignPathPreview != null)
-				return campaignPathPreview;
-
-			if (!generatingCampaignPathPreview && Status == MapStatus.Available)
-			{
-				generatingCampaignPathPreview = true;
-				cache.CacheMinimap(this);
-			}
-
-			return null;
-		}
-
 		public void SetCampaignPathPreview(Sprite campaignPathPreview)
 		{
 			this.campaignPathPreview = campaignPathPreview;
-			generatingCampaignPathPreview = false;
+		}
+
+		public bool hasCampaignPreview()
+		{
+			return CustomCampaignPathPreview != null;
+		}
+
+		public void switchPreview()
+		{
+			if (CustomCampaignPathPreview != null && !switchedPreview)
+			{
+				var temp = CustomPreview;
+				CustomPreview = CustomCampaignPathPreview;
+				CustomCampaignPathPreview = temp;
+				switchedPreview = true;
+			}
+			if (switchedPreview)
+			{
+				var temp = minimap;
+				minimap = campaignPathPreview;
+				campaignPathPreview = temp;
+			}
 		}
 
 		public MapPreview(string uid, MapCache cache)
@@ -143,6 +150,7 @@ namespace OpenRA
 			Bounds = m.Bounds;
 			SpawnPoints = m.SpawnPoints.Value;
 			CustomPreview = m.CustomPreview;
+			CustomCampaignPathPreview = m.CampaignPathPreview;
 			Status = MapStatus.Available;
 			Class = classification;
 
