@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 
 using OpenRA.Graphics;
 using OpenRA.Widgets;
@@ -21,12 +22,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	class CampaignMissionBrowserLogic
 	{
 		readonly CampaignWorldLogic campaignWorld;
+		readonly MapPreviewWidget missionPreviewWidget;
 		readonly LabelWidget previewMenuTitle;
 		readonly ButtonWidget campaignBrowserBackButton, nextButton, prevButton;
-		readonly MapPreviewWidget campaignPreviewWidget;
-		readonly ButtonWidget campaignPreviewContinueButton, campaignPreviewGraficButton;
+		readonly ButtonWidget playButton;
+		readonly ButtonWidget missionPreviewGraficButton;
+		readonly LabelWidget missionTitle;
+		readonly ScrollPanelWidget missionDescriptionPanel;
+		readonly LabelWidget missionDescription;
+		readonly SpriteFont missionDescriptionFont;
+		readonly ScrollPanelWidget countryDescriptionPanel;
+		readonly LabelWidget countryDescriptionHeader, countryDescriptionValues;
+		readonly SpriteFont countryDescriptionFont;
 
-		MapPreview selectedMapPreview, campaignPathPreview;
+		MapPreview selectedMapPreview, firstMapPreview;
 		Map nextMap;
 
 		int mapIndex = 0;
@@ -34,7 +43,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		bool campaignPreviewRequired = false;
 		bool congratsFlag = false;
-		Dictionary<string,bool> lastMissionSuccessfullyPlayed = new Dictionary<string,bool>();
+		Dictionary<string, bool> lastMissionSuccessfullyPlayed = new Dictionary<string, bool>();
 
 		List<Map> factionMaps = new List<Map>();	// All maps of a faction
 		List<Map> nextMaps = new List<Map>();		// All actual playable maps
@@ -45,7 +54,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			foreach (var f in CampaignProgress.factions)
 				lastMissionSuccessfullyPlayed.Add(f, false);
-			
+
 			// Preview label
 			previewMenuTitle = widget.Get<LabelWidget>("PREVIEW_MENU_TITLE");
 
@@ -67,30 +76,88 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 			};
 
-			// Campaign preview grafic
-			campaignPreviewWidget = widget.Get<MapPreviewWidget>("CAMPAIGN_PREVIEW_GRAFIC");
+			// Map grafic
+			widget.Get("CAMPAIGN_BROWSER_GRAFIC_CONTAINER").IsVisible = () => selectedMapPreview != null;
 
-			campaignPreviewGraficButton = widget.Get<ButtonWidget>("CAMPAIGN_PREVIEW_GRAFIC_BUTTON");
-			campaignPreviewGraficButton.OnClick = campaignWorld.CallbackShowCampaignBrowserOnClick;
+			missionPreviewWidget = widget.Get<MapPreviewWidget>("MISSION_PREVIEW");
+			missionPreviewWidget.Preview = () => selectedMapPreview;
 
-			// Campaign preview button
-			campaignPreviewContinueButton = widget.Get<ButtonWidget>("CAMPAIGN_PREVIEW_CONTINUE_BUTTON");
-			campaignPreviewContinueButton.OnClick = campaignWorld.CallbackShowCampaignBrowserOnClick;
+			missionPreviewGraficButton = widget.Get<ButtonWidget>("MISSION_PREVIEW_BUTTON");
+			missionPreviewGraficButton.OnClick = CallbackPlayButtonOnClick;
 
-			// Campaign preview back button
-			campaignBrowserBackButton = widget.Get<ButtonWidget>("CAMPAIGN_PREVIEW_BACK_BUTTON");
-			campaignBrowserBackButton.OnClick = () =>
+			// Mission text
+			missionTitle = widget.Get<LabelWidget>("MISSION_TITLE");
+			missionTitle.GetText = () => this.GetNextMap().Title;
+
+			// Mission description
+			missionDescriptionPanel = widget.Get<ScrollPanelWidget>("MISSION_DESCRIPTION_PANEL");
+			missionDescription = missionDescriptionPanel.Get<LabelWidget>("MISSION_DESCRIPTION");
+			missionDescriptionFont = Game.Renderer.Fonts[missionDescription.Font];
+
+			// Country description
+			countryDescriptionPanel = widget.Get<ScrollPanelWidget>("COUNTRY_DESCRIPTION_PANEL");
+			countryDescriptionHeader = countryDescriptionPanel.Get<LabelWidget>("COUNTRY_DESCRIPTION_HEADER");
+			countryDescriptionValues = countryDescriptionPanel.Get<LabelWidget>("COUNTRY_DESCRIPTION_VALUES");
+			countryDescriptionFont = Game.Renderer.Fonts[missionDescription.Font];
+
+			// Play button
+			playButton = widget.Get<ButtonWidget>("PLAY_BUTTON");
+			playButton.OnClick = CallbackPlayButtonOnClick;
+		}
+
+		public void SetMapContent()
+		{
+			if (this.GetNextMap() != null)
 			{
-				if (this.congratsFlag)
-					campaignWorld.ShowCongratulations();
-				else
-				{
-					Game.Disconnect();
-					Ui.CloseWindow();
-					onExit();
-				}
-			};
+				// Mission Map
+				var missionDescriptionText = this.GetNextMap().Description != null ?
+					this.GetNextMap().Description.Replace("\\n", "\n") : "Mission description not available";
+				missionDescriptionText = WidgetUtils.WrapText(missionDescriptionText, missionDescription.Bounds.Width, missionDescriptionFont);
+				missionDescription.Text = missionDescriptionText;
+				missionDescription.Bounds.Height = missionDescriptionFont.Measure(missionDescriptionText).Y;
+				missionDescriptionPanel.ScrollToTop();
+				missionDescriptionPanel.Layout.AdjustChildren();
 
+				var countryDescriptionText = this.GetNextMap().CountryDescription;
+				var countryDescriptionTextHeader = "No information available";
+				var countryDescriptionTextValues = "";
+				if (countryDescriptionText != null && countryDescriptionText.Length > 0)
+				{
+					countryDescriptionText = countryDescriptionText.Replace("\\n", "\n");
+					if (countryDescriptionText.Contains('|'))
+					{
+						var splits = countryDescriptionText.Split('|');
+
+						if (splits.Length > 0)
+						{
+							countryDescriptionTextHeader = "";
+							for (int i = 0; i < splits.Length; i = i + 2)
+							{
+								countryDescriptionTextHeader += splits[i];
+								countryDescriptionTextValues += splits[i + 1];
+							}
+						}
+					}
+				}
+
+				countryDescriptionTextHeader = WidgetUtils.WrapText(countryDescriptionTextHeader, countryDescriptionHeader.Bounds.Width, countryDescriptionFont);
+				countryDescriptionHeader.Text = countryDescriptionTextHeader;
+				countryDescriptionHeader.Bounds.Height = countryDescriptionFont.Measure(countryDescriptionTextHeader).Y;
+				countryDescriptionTextValues = WidgetUtils.WrapText(countryDescriptionTextValues, countryDescriptionValues.Bounds.Width, countryDescriptionFont);
+				countryDescriptionValues.Text = countryDescriptionTextValues;
+				countryDescriptionValues.Bounds.Height = countryDescriptionFont.Measure(countryDescriptionTextValues).Y;
+				countryDescriptionPanel.ScrollToTop();
+				countryDescriptionPanel.Layout.AdjustChildren();
+
+				selectedMapPreview = Game.ModData.MapCache[this.GetNextMap().Uid];
+			}
+		}
+
+		void CallbackPlayButtonOnClick()
+		{
+			campaignWorld.SetCampaignBrowserVisibility(false);
+			campaignWorld.SetVideoBackgroundVisibility(true);
+			campaignWorld.PlayAndStart();
 		}
 
 		public bool GetCampaignPreviewRequired()
@@ -106,14 +173,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					mapIndex = (mapIndex + 1) % nextMaps.Count;
 					nextMap = nextMaps[mapIndex];
-					campaignWorld.SetMapContent();
+					SetMapContent();
 				};
 
 				prevButton.OnClick = () =>
 				{
 					mapIndex = (mapIndex + nextMaps.Count - 1) % nextMaps.Count;
 					nextMap = nextMaps[mapIndex];
-					campaignWorld.SetMapContent();
+					SetMapContent();
 				};
 			}
 			else
@@ -147,7 +214,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				campaignWorld.ShowCongratulations();
 			else if (campaignPreviewRequired)
 			{
-				SetCampaignPathPreview(Game.ModData.MapCache[this.GetNextMap().Uid]);
 				campaignWorld.ShowCampaignPreview();
 			}
 			else
@@ -168,24 +234,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return this.nextMap;
 		}
 
-		public MapPreview GetSelectedMapPreview()
+		public MapPreview GetFirstMapPreview()
 		{
-			return this.selectedMapPreview;
+			return firstMapPreview;
 		}
 
-		public void SetSelectedMapPreview(MapPreview selectedMapPreview)
+		public void SwitchFirstMapPreview()
 		{
-			this.selectedMapPreview = selectedMapPreview;
-		}
-
-		public MapPreview GetCampaignPathPreview()
-		{
-			return this.campaignPathPreview;
-		}
-
-		public void SetCampaignPathPreview(MapPreview campaigPathPreview)
-		{
-			this.campaignPathPreview = campaigPathPreview;
+			if (firstMapPreview.hasCampaignPreview())
+				firstMapPreview.switchPreview();
 		}
 
 		void LoadFactionMaps()
@@ -233,6 +290,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							.ToList().ForEach(s => LoadMission(s));
 					}
 
+					firstMapPreview = Game.ModData.MapCache[this.nextMaps[0].Uid];
 					SelectFirstMission();
 				}
 			}
@@ -276,6 +334,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					SelectFirstMission();
 				}
 			}
+		}
+
+		public bool GetCongratsFlag()
+		{
+			return congratsFlag;
 		}
 	}
 }

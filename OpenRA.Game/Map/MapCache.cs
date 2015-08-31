@@ -31,7 +31,6 @@ namespace OpenRA
 		bool previewLoaderThreadShutDown = true;
 		object syncRoot = new object();
 		Queue<MapPreview> generateMinimap = new Queue<MapPreview>();
-		Queue<MapPreview> generateCampaignPathPreview = new Queue<MapPreview>();
 
 		public MapCache(ModData modData)
 		{
@@ -156,20 +155,6 @@ namespace OpenRA
 					}
 				}
 
-				List<MapPreview> todo2;
-				lock (syncRoot)
-				{
-					todo2 = generateCampaignPathPreview.Where(p => p.GetCampaignPathPreview() == null).ToList();
-					generateCampaignPathPreview.Clear();
-					if (keepAlive > 0)
-						keepAlive--;
-					if (keepAlive == 0 && todo2.Count == 0)
-					{
-						previewLoaderThreadShutDown = true;
-						break;
-					}
-				}
-
 				if (todo.Count == 0)
 				{
 					Thread.Sleep(emptyDelay);
@@ -184,6 +169,7 @@ namespace OpenRA
 					// The rendering is thread safe because it only reads from the passed instances and writes to a new bitmap
 					var createdPreview = false;
 					var bitmap = p.CustomPreview;
+					var campaignBitmap = p.CustomCampaignPathPreview;
 					if (bitmap == null)
 					{
 						createdPreview = true;
@@ -195,47 +181,22 @@ namespace OpenRA
 						try
 						{
 							p.SetMinimap(sheetBuilder.Add(bitmap));
+							if (campaignBitmap != null)
+								p.SetCampaignPathPreview(sheetBuilder.Add(campaignBitmap));
 						}
 						finally
 						{
 							if (createdPreview)
+							{
 								bitmap.Dispose();
+								campaignBitmap.Dispose();
+							}
 						}
 					});
 
 					// Yuck... But this helps the UI Jank when opening the map selector significantly.
 					Thread.Sleep(Environment.ProcessorCount == 1 ? 25 : 5);
 				}
-
-				// Render the campaignPathPreview into the shared sheet
-				foreach (var p in todo2)
-				{
-					// The rendering is thread safe because it only reads from the passed instances and writes to a new bitmap
-					var createdCampaignPathPreview = false;
-					var campaignPathPreviewBitmap = p.CustomCampaignPathPreview;
-					if (campaignPathPreviewBitmap == null)
-					{
-						createdCampaignPathPreview = true;
-						campaignPathPreviewBitmap = Minimap.RenderMapPreview(modData.DefaultRules.TileSets[p.Map.Tileset], p.Map, modData.DefaultRules, true);
-					}
-
-					Game.RunAfterTick(() =>
-					{
-						try
-						{
-							p.SetCampaignPathPreview(sheetBuilder.Add(campaignPathPreviewBitmap));
-						}
-						finally
-						{
-							if (createdCampaignPathPreview)
-								campaignPathPreviewBitmap.Dispose();
-						}
-					});
-
-					// Yuck... But this helps the UI Jank when opening the map selector significantly.
-					Thread.Sleep(Environment.ProcessorCount == 1 ? 25 : 5);
-				} 
-
 			}
 
 			// The buffer is not fully reclaimed until changes are written out to the texture.

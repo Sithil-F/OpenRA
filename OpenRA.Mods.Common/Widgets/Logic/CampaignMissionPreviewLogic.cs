@@ -18,106 +18,41 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	class CampaignMissionPreviewLogic
 	{
-		readonly CampaignMissionBrowserLogic campaignMissionBrowser;
 		readonly CampaignWorldLogic campaignWorld;
-		readonly MapPreviewWidget missionPreviewWidget;
-		readonly ButtonWidget playButton;
-		readonly ButtonWidget missionPreviewGraficButton;
-		readonly LabelWidget missionTitle;
-		readonly ScrollPanelWidget missionDescriptionPanel;
-		readonly LabelWidget missionDescription;
-		readonly SpriteFont missionDescriptionFont;
-		readonly ScrollPanelWidget countryDescriptionPanel;
-		readonly LabelWidget countryDescriptionHeader, countryDescriptionValues;
-		readonly SpriteFont countryDescriptionFont;
+		readonly MapPreviewWidget campaignPreviewWidget;
+		readonly ButtonWidget campaignPreviewContinueButton, campaignPreviewGraficButton, campaignPreviewBackButton;
 
-		public CampaignMissionPreviewLogic(CampaignWorldLogic campaignWorld, CampaignMissionBrowserLogic campaignMissionBrowser, Widget widget, Action onExit)
+		public CampaignMissionPreviewLogic(CampaignWorldLogic campaignWorld, Widget widget, Action onExit)
 		{
 			this.campaignWorld = campaignWorld;
-			this.campaignMissionBrowser = campaignMissionBrowser;
 
-			// Map grafic
-			widget.Get("CAMPAIGN_BROWSER_GRAFIC_CONTAINER").IsVisible = () => campaignMissionBrowser.GetSelectedMapPreview() != null;
 
-			missionPreviewWidget = widget.Get<MapPreviewWidget>("MISSION_PREVIEW");
-			missionPreviewWidget.Preview = () => campaignMissionBrowser.GetSelectedMapPreview();
+			// Campaign preview grafic
+			campaignPreviewWidget = widget.Get<MapPreviewWidget>("CAMPAIGN_PREVIEW_GRAFIC");
+			campaignPreviewWidget.Preview = campaignWorld.GetFirstMapPreview;
 
-			missionPreviewGraficButton = widget.Get<ButtonWidget>("MISSION_PREVIEW_BUTTON");
-			missionPreviewGraficButton.OnClick = CallbackPlayButtonOnClick;
+			campaignPreviewGraficButton = widget.Get<ButtonWidget>("CAMPAIGN_PREVIEW_GRAFIC_BUTTON");
+			campaignPreviewGraficButton.OnClick = campaignWorld.CallbackShowCampaignBrowserOnClick;
 
-			// Mission text
-			missionTitle = widget.Get<LabelWidget>("MISSION_TITLE");
-			missionTitle.GetText = () => campaignMissionBrowser.GetNextMap().Title;
+			// Campaign preview button
+			campaignPreviewContinueButton = widget.Get<ButtonWidget>("CAMPAIGN_PREVIEW_CONTINUE_BUTTON");
+			campaignPreviewContinueButton.OnClick = campaignWorld.CallbackShowCampaignBrowserOnClick;
 
-			// Mission description
-			missionDescriptionPanel = widget.Get<ScrollPanelWidget>("MISSION_DESCRIPTION_PANEL");
-			missionDescription = missionDescriptionPanel.Get<LabelWidget>("MISSION_DESCRIPTION");
-			missionDescriptionFont = Game.Renderer.Fonts[missionDescription.Font];
-
-			// Country description
-			countryDescriptionPanel = widget.Get<ScrollPanelWidget>("COUNTRY_DESCRIPTION_PANEL");
-			countryDescriptionHeader = countryDescriptionPanel.Get<LabelWidget>("COUNTRY_DESCRIPTION_HEADER");
-			countryDescriptionValues = countryDescriptionPanel.Get<LabelWidget>("COUNTRY_DESCRIPTION_VALUES");
-			countryDescriptionFont = Game.Renderer.Fonts[missionDescription.Font];
-
-			// Play button
-			playButton = widget.Get<ButtonWidget>("PLAY_BUTTON");
-			playButton.OnClick = CallbackPlayButtonOnClick;
-		}
-
-		public void SetMapContent()
-		{
-			if (campaignMissionBrowser.GetNextMap() != null)
+			// Campaign preview back button
+			campaignPreviewBackButton = widget.Get<ButtonWidget>("CAMPAIGN_PREVIEW_BACK_BUTTON");
+			campaignPreviewBackButton.OnClick = () =>
 			{
-				// Mission Map
-				var missionDescriptionText = campaignMissionBrowser.GetNextMap().Description != null ?
-					campaignMissionBrowser.GetNextMap().Description.Replace("\\n", "\n") : "Mission description not available";
-				missionDescriptionText = WidgetUtils.WrapText(missionDescriptionText, missionDescription.Bounds.Width, missionDescriptionFont);
-				missionDescription.Text = missionDescriptionText;
-				missionDescription.Bounds.Height = missionDescriptionFont.Measure(missionDescriptionText).Y;
-				missionDescriptionPanel.ScrollToTop();
-				missionDescriptionPanel.Layout.AdjustChildren();
-
-				var countryDescriptionText = campaignMissionBrowser.GetNextMap().CountryDescription;
-				var countryDescriptionTextHeader = "No information available";
-				var countryDescriptionTextValues = "";
-				if (countryDescriptionText != null && countryDescriptionText.Length > 0)
+				campaignWorld.SwitchFirstMapPreview();
+				if (campaignWorld.GetCongratsFlag())
+					campaignWorld.ShowCongratulations();
+				else
 				{
-					countryDescriptionText = countryDescriptionText.Replace("\\n", "\n");
-					if (countryDescriptionText.Contains('|'))
-					{
-						var splits = countryDescriptionText.Split('|');
-
-						if (splits.Length > 0)
-						{
-							countryDescriptionTextHeader = "";
-							for (int i = 0; i < splits.Length; i = i + 2)
-							{
-								countryDescriptionTextHeader += splits[i];
-								countryDescriptionTextValues += splits[i + 1];
-							}
-						}
-					}
+					Game.Disconnect();
+					Ui.CloseWindow();
+					onExit();
 				}
+			};
 
-				countryDescriptionTextHeader = WidgetUtils.WrapText(countryDescriptionTextHeader, countryDescriptionHeader.Bounds.Width, countryDescriptionFont);
-				countryDescriptionHeader.Text = countryDescriptionTextHeader;
-				countryDescriptionHeader.Bounds.Height = countryDescriptionFont.Measure(countryDescriptionTextHeader).Y;
-				countryDescriptionTextValues = WidgetUtils.WrapText(countryDescriptionTextValues, countryDescriptionValues.Bounds.Width, countryDescriptionFont);
-				countryDescriptionValues.Text = countryDescriptionTextValues;
-				countryDescriptionValues.Bounds.Height = countryDescriptionFont.Measure(countryDescriptionTextValues).Y;
-				countryDescriptionPanel.ScrollToTop();
-				countryDescriptionPanel.Layout.AdjustChildren();
-
-				campaignMissionBrowser.SetSelectedMapPreview(Game.ModData.MapCache[campaignMissionBrowser.GetNextMap().Uid]);
-			}
-		}
-
-		void CallbackPlayButtonOnClick()
-		{
-			campaignWorld.SetCampaignBrowserVisibility(false);
-			campaignWorld.SetVideoBackgroundVisibility(true);
-			campaignWorld.PlayAndStart();
 		}
 	}
 }
