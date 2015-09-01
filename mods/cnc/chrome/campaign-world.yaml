@@ -266,8 +266,8 @@ Container@CAMPAIGN_WORLD:
 							Height: PARENT_BOTTOM - 2
 							Background: panel-allblack
 						Image@GDI_LOGO:
-							X: PARENT_RIGHT / 2 - 122
-							Y: PARENT_BOTTOM / 2 - 160
+							X: PARENT_RIGHT / 2 - 96
+							Y: PARENT_BOTTOM / 2 - 126
 							ImageCollection: medals
 							ImageName: gdi-medal
 				Container@CONGRATULATION_LOGO_NOD:
@@ -282,7 +282,7 @@ Container@CAMPAIGN_WORLD:
 							Height: PARENT_BOTTOM - 2
 							Background: panel-allblack
 						Image@NOD_LOGO:
-							X: PARENT_RIGHT / 2 - 115
-							Y: PARENT_BOTTOM / 2 - 169
+							X: PARENT_RIGHT / 2 - 90
+							Y: PARENT_BOTTOM / 2 - 136
 							ImageCollection: medals
 							ImageName: nod-medal

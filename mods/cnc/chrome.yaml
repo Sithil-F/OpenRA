@@ -14,8 +14,8 @@ logos: chrome.png
 	gdi-load:256,256,256,256
 	
 medals: medal.png
-	nod-medal:13,99,231,338
-	gdi-medal:262,99,243,320
+	nod-medal:1,1,180,273
+	gdi-medal:182,1,193,252
 
 button: chrome.png
 	background: 2,194,60,60
