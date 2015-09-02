@@ -290,7 +290,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							.ToList().ForEach(s => LoadMission(s));
 					}
 
-					firstMapPreview = Game.ModData.MapCache[this.nextMaps[0].Uid];
 					SelectFirstMission();
 				}
 			}
@@ -299,7 +298,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void SelectFirstMission()
 		{
 			if (nextMaps.Count > 0)
+			{
 				nextMap = nextMaps[0];
+				firstMapPreview = Game.ModData.MapCache[nextMap.Uid];
+			}
 		}
 
 		void LoadMission(string name)
