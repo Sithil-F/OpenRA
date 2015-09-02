@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var backButton = widget.Get<ButtonWidget>("BACK_BUTTON");
 
 			var count = 0;
-			foreach (var f in CampaignProgress.factions)
+			foreach (var f in CampaignProgress.Factions)
 			{
 				count++;
 				var continueButton = widget.Get<ButtonWidget>("CONTINUE_" + f.ToUpper() + "_BUTTON");
@@ -63,7 +63,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "onStart", () => { widget.Parent.RemoveChild(widget); } }
 				});
 			};
-
 		}
 	}
 }

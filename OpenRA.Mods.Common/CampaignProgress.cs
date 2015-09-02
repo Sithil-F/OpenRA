@@ -9,18 +9,19 @@ namespace OpenRA.Mods.Common
 	public class CampaignProgress
 	{
 		static string progressFile;
-		public static List<String> factions = new List<String>();
+		public static List<string> Factions = new List<string>();
 		static bool saveProgressFlag = false;
 		static string playedMission;
 
 		public static void Init(List<Player> players)
 		{
-			factions.Clear();
+			Factions.Clear();
 			foreach (var p in players)
 			{
-				if (!factions.Contains(p.Faction.Name) && !p.NonCombatant)
-					factions.Add(p.Faction.Name);
+				if (!Factions.Contains(p.Faction.Name) && !p.NonCombatant)
+					Factions.Add(p.Faction.Name);
 			}
+
 			ModMetadata initialMod = null;
 			ModMetadata.AllMods.TryGetValue(Game.Settings.Game.Mod, out initialMod);
 			var mod = initialMod.Id;
@@ -101,7 +102,7 @@ namespace OpenRA.Mods.Common
 			var yaml = new List<MiniYamlNode>();
 			var mission = new MiniYamlNode("Mission", "");
 
-			foreach (var f in factions)
+			foreach (var f in Factions)
 			{
 				var nodes = new List<MiniYamlNode>();
 				nodes.Add(mission);

@@ -104,12 +104,12 @@ namespace OpenRA
 			this.campaignPathPreview = campaignPathPreview;
 		}
 
-		public bool hasCampaignPreview()
+		public bool HasCampaignPreview()
 		{
 			return CustomCampaignPathPreview != null;
 		}
 
-		public void switchPreview()
+		public void SwitchPreview()
 		{
 			if (CustomCampaignPathPreview != null && !switchedPreview)
 			{
@@ -118,6 +118,7 @@ namespace OpenRA
 				CustomCampaignPathPreview = temp;
 				switchedPreview = true;
 			}
+
 			if (switchedPreview)
 			{
 				var temp = minimap;

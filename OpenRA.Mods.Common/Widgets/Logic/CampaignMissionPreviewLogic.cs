@@ -26,7 +26,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			this.campaignWorld = campaignWorld;
 
-
 			// Campaign preview grafic
 			campaignPreviewWidget = widget.Get<MapPreviewWidget>("CAMPAIGN_PREVIEW_GRAFIC");
 			campaignPreviewWidget.Preview = campaignWorld.GetFirstMapPreview;
@@ -52,7 +51,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					onExit();
 				}
 			};
-
 		}
 	}
 }

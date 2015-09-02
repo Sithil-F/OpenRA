@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			this.campaignWorld = campaignWorld;
 
-			foreach (var f in CampaignProgress.factions)
+			foreach (var f in CampaignProgress.Factions)
 				lastMissionSuccessfullyPlayed.Add(f, false);
 
 			// Preview label
@@ -200,14 +200,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.CheckCampaignProgressForPreview();
 
 			var success = false;
-			foreach (var f in CampaignProgress.factions)
+			foreach (var f in CampaignProgress.Factions)
 			{
 				if (CampaignWorldLogic.Campaign.Equals(f + " Campaign") && lastMissionSuccessfullyPlayed[f])
 				{
 					success = true;
 					break;
 				}
-
 			}
 
 			if (success)
@@ -241,8 +240,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public void SwitchFirstMapPreview()
 		{
-			if (firstMapPreview.hasCampaignPreview())
-				firstMapPreview.switchPreview();
+			if (firstMapPreview.HasCampaignPreview())
+				firstMapPreview.SwitchPreview();
 		}
 
 		void LoadFactionMaps()
@@ -272,11 +271,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void LoadCurrentMissions()
 		{
-			foreach (var f in CampaignProgress.factions)
+			foreach (var f in CampaignProgress.Factions)
 			{
 				if (CampaignWorldLogic.Campaign.Equals(f + " Campaign"))
 					lastMission = CampaignProgress.GetMission(f);
 			}
+
 			if (lastMission.Length > 0)
 			{
 				var maps = factionMaps
@@ -316,11 +316,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (lastMission.Length > 0 && nextMap == null)
 			{
 				congratsFlag = true;
-				foreach (var f in CampaignProgress.factions)
+				foreach (var f in CampaignProgress.Factions)
 				{
 					if (CampaignWorldLogic.Campaign.Equals(f + " Campaign"))
 						lastMissionSuccessfullyPlayed[f] = true;
 				}
+
 				LoadMission(lastMission);
 				SelectFirstMission();
 			}
