@@ -26,7 +26,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 		readonly VqaPlayerWidget videoPlayer;
 		readonly VqaPlayerWidget videoBGPlayer;
 		readonly ImageWidget chooseFactionBanner;
-		//readonly BackgroundWidget chooseTextBg;
 		readonly float cachedMusicVolume;
 		bool videoStopped = false;
 		bool campaignStarted = false;
@@ -34,8 +33,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 
 		List<ButtonWidget> buttonList = new List<ButtonWidget>();
 		List<ImageWidget> imageList = new List<ImageWidget>();
-		List<string> factionList = CampaignProgress.factions;
-		public string videoStart;
+		List<string> factionList = CampaignProgress.Factions;
+		public string VideoStart;
 		List<string> videoFaction;
 		string audioFaction;
 		int actualVideo;
@@ -54,7 +53,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 		{			
 			this.onStart = onStart;
 
-			videoStart = null;
+			VideoStart = null;
 			videoFaction = null;
 			audioFaction = null;
 			actualVideo = 0;
@@ -67,6 +66,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 				imageList.Add(widget.Get<ImageWidget>(f + "_LOGO"));
 				i++;
 			}
+
 			videoBGPlayer = widget.Get<VqaPlayerWidget>("VIDEO_BG");
 			chooseFactionBanner = widget.GetOrNull<ImageWidget>("CHOOSE_FACTION_IMAGE");
 
@@ -76,16 +76,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 			cachedMusicVolume = Sound.MusicVolume;
 			Sound.MusicVolume = 0;
 
-			getStartVideo();
+			GetStartVideo();
 
-			if (videoStart != null && GlobalFileSystem.Exists(videoStart))
+			if (VideoStart != null && GlobalFileSystem.Exists(VideoStart))
 			{
 				foreach (var image in imageList)
 				{
 					image.Visible = false;
 				}
-				videoBGPlayer.Load(videoStart);
-				videoPlayer.Load(videoStart);
+
+				videoBGPlayer.Load(VideoStart);
+				videoPlayer.Load(VideoStart);
 				videoPlayer.PlayThen(PlayThenMethod);
 			}
 
@@ -126,9 +127,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 						if (actualVideo < videoFaction.Count)
 							playThen = PlayThen.Faction;
 						else
-						{
 							playThen = PlayThen.Start;
-						}
 						break;
 					case PlayThen.Start:
 						StartCampaign(startedCampaign);
@@ -141,21 +140,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 
 		void CallbackFactionButtonOnClick(string faction)
 		{
-			foreach(var button in buttonList)
+			foreach (var button in buttonList)
 			{
 				button.IsDisabled = () => true;
 			}
+
 			if (chooseFactionBanner != null)
 				chooseFactionBanner.Visible = false;
 			CampaignProgress.SaveProgress(faction, "");
 			startedCampaign = faction + " Campaign";
 
-			getFactionMedia(faction);
+			GetFactionMedia(faction);
 
-			if(audioFaction != null)
+			if (audioFaction != null)
 				Sound.Play(audioFaction);
 
-			if (videoStart == null)
+			if (VideoStart == null)
 			{
 				System.Threading.Thread.Sleep(3000);
 				StartCampaign(startedCampaign);
@@ -169,7 +169,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 			}
 		}
 
-		void getStartVideo()
+		void GetStartVideo()
 		{
 			if (Game.ModData.Manifest.FactionMedia.Any())
 			{
@@ -184,7 +184,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 							if (type.Key.Equals("Start"))
 							{
 								if (type.Value.Nodes.Count > 0)
-									videoStart = type.Value.Nodes[0].Key;
+									VideoStart = type.Value.Nodes[0].Key;
 							}
 						}
 					}
@@ -192,7 +192,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 			}
 		}
 
-		void getFactionMedia(string faction)
+		void GetFactionMedia(string faction)
 		{
 			if (Game.ModData.Manifest.FactionMedia.Any())
 			{
@@ -215,6 +215,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 							}
 						}
 					}
+
 					if (mediaType.Key.Equals("Audio"))
 					{
 						foreach (var type in mediaType.Value.Nodes)
@@ -263,13 +264,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 
 		void StartCampaign(string faction)
 		{
-			if(videoStart == null)
+			if (VideoStart == null)
 			{
-				foreach(var image in imageList)
+				foreach (var image in imageList)
 				{
 					image.Visible = false;
 				}
 			}
+
 			campaignStarted = true;
 			OrderManager om = null;
 

@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			CampaignProgress.Init(world.Players);
 
-			var factionList = new List<String>();
+			var factionList = new List<string>();
 			var missionPlayed = false;
 
 			foreach (var p in world.Players)
@@ -93,6 +93,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					factionList.Add(faction);
 					missionPlayed = CampaignProgress.GetMission(faction).Length != 0;
 				}
+
 				if (missionPlayed)
 				{
 					break;
@@ -102,7 +103,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var campaignButton = singleplayerMenu.GetOrNull<ButtonWidget>("CAMPAIGN_BUTTON");
 			if (campaignButton != null)
 			{
-				if (CampaignProgress.factions.Count == 0)
+				if (CampaignProgress.Factions.Count == 0)
 					campaignButton.Disabled = true;
 
 				campaignButton.OnClick = () =>
@@ -115,7 +116,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							{ "onExit", () => {
 								menuType = MenuType.Singleplayer; 
-								CampaignProgress.ResetSaveProgressFlag();} },
+								CampaignProgress.ResetSaveProgressFlag();
+							}
+							},
 							{ "onStart", RemoveShellmapUI }
 						});
 					}
@@ -125,7 +128,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							{ "onExit", () => {
 								menuType = MenuType.Singleplayer; 
-								CampaignProgress.ResetSaveProgressFlag();} },
+								CampaignProgress.ResetSaveProgressFlag();
+							}
+							},
 							{ "onStart", RemoveShellmapUI }
 						});
 					}

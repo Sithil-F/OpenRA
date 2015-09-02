@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.campaignBrowser.IsVisible = () => visibility;
 		}
 
-		public void  CallbackShowCampaignBrowserOnClick()
+		public void CallbackShowCampaignBrowserOnClick()
 		{
 			if (campaignMissionBrowser.GetCampaignPreviewRequired())
 				campaignMissionBrowser.SwitchFirstMapPreview();
