@@ -37,11 +37,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.congratulationTextFont = Game.Renderer.Fonts[congratulationText.Font];
 
 			// Congratulation logo
-			foreach (var f in CampaignProgress.factions)
+			foreach (var f in CampaignProgress.Factions)
 			{
 				var congratulationLogo = widget.Get<ContainerWidget>("CONGRATULATION_LOGO_" + f.ToUpper());
 				if (!(f + " Campaign").Equals(CampaignWorldLogic.Campaign))
-					congratulationLogo .IsVisible = () => false;
+					congratulationLogo.IsVisible = () => false;
 			}
 
 			// Congratulation replay button

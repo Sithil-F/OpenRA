@@ -52,16 +52,26 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			videoPlayer = widget.Get<VqaPlayerWidget>("VIDEO");
 
 			this.campaignCongratulation = new CampaignCongratulationLogic(this, widget, onExit);
+			this.campaignMissionPreview = new CampaignMissionPreviewLogic(this, widget, onExit);
 			this.campaignMissionBrowser = new CampaignMissionBrowserLogic(this, widget, onExit);
-			this.campaignMissionPreview = new CampaignMissionPreviewLogic(this, campaignMissionBrowser, widget, onExit);
 
 			this.campaignMissionBrowser.ProgressCampaign();
-			this.SetMapContent();
+			this.campaignMissionBrowser.SetMapContent();
 		}
 
-		public void SetMapContent()
+		public bool GetCongratsFlag()
 		{
-			this.campaignMissionPreview.SetMapContent();
+			return campaignMissionBrowser.GetCongratsFlag();
+		}
+
+		public MapPreview GetFirstMapPreview()
+		{
+			return campaignMissionBrowser.GetFirstMapPreview();
+		}
+
+		public void SwitchFirstMapPreview()
+		{
+			campaignMissionBrowser.SwitchFirstMapPreview();
 		}
 
 		public LabelWidget GetWorldMenuTitle()
@@ -71,6 +81,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public void ShowCampaignPreview()
 		{
+			campaignMissionBrowser.SwitchFirstMapPreview();
+
 			campaignPreview.IsVisible = () => true;
 			campaignBrowser.IsVisible = () => false;
 			campaignCongratulation.SetCongratulationVisibility(false);
@@ -83,6 +95,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public void CallbackShowCampaignBrowserOnClick()
 		{
+			if (campaignMissionBrowser.GetCampaignPreviewRequired())
+				campaignMissionBrowser.SwitchFirstMapPreview();
+
 			campaignPreview.IsVisible = () => false;
 			campaignBrowser.IsVisible = () => true;
 			campaignCongratulation.SetCongratulationVisibility(false);
