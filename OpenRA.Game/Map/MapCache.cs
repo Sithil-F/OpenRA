@@ -189,7 +189,8 @@ namespace OpenRA
 							if (createdPreview)
 							{
 								bitmap.Dispose();
-								campaignBitmap.Dispose();
+								if (campaignBitmap != null)
+									campaignBitmap.Dispose();
 							}
 						}
 					});
