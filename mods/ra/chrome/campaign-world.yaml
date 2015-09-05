@@ -1,9 +1,5 @@
 Container@CAMPAIGN_WORLD:
 	Logic: CampaignWorldLogic
-	X: 0
-	Y: 0
-	Width: WINDOW_RIGHT#WINDOW_RIGHT / 2
-	Height: WINDOW_BOTTOM#WINDOW_BOTTOM / 2
 	Children:
 		Background@VIDEO_BG:
 			Width: WINDOW_RIGHT
@@ -13,10 +9,10 @@ Container@CAMPAIGN_WORLD:
 					Width: WINDOW_RIGHT
 					Height: WINDOW_BOTTOM
 		Container@CAMPAIGN_PREVIEW:
-			X: WINDOW_RIGHT/4
-			Y: (WINDOW_BOTTOM - HEIGHT)/2
-			Width: WINDOW_RIGHT / 2
-			Height: WINDOW_BOTTOM / 2
+			X: WINDOW_RIGHT/2 - WIDTH/2
+			Y: WINDOW_BOTTOM/2 - HEIGHT/2
+			Width: 500
+			Height: 250
 			Children:
 				Label@PREVIEW_MENU_TITLE:
 					Y: 0-25
@@ -25,44 +21,50 @@ Container@CAMPAIGN_WORLD:
 					Contrast: true
 					Font: BigBold
 				Background@CAMPAIGN_PREVIEW_BG:
-					Width: WINDOW_RIGHT / 2
-					Height: WINDOW_BOTTOM / 2
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
 					Children:
 						MapPreview@CAMPAIGN_PREVIEW_GRAFIC:
-							Width: PARENT_RIGHT-15
-							Height: PARENT_BOTTOM-15
+							Width: PARENT_RIGHT-20
+							Height: PARENT_BOTTOM-20
 							X: (PARENT_RIGHT-WIDTH)/2
 							Y: (PARENT_BOTTOM-HEIGHT)/2
 							IgnoreMouseOver: True
 							IgnoreMouseInput: True
 							ShowSpawnPoints: False
 						Button@CAMPAIGN_PREVIEW_GRAFIC_BUTTON
-							Width: PARENT_RIGHT-15
-							Height: PARENT_BOTTOM-15
+							Width: PARENT_RIGHT-20
+							Height: PARENT_BOTTOM-20
 							X: (PARENT_RIGHT-WIDTH)/2
 							Y: (PARENT_BOTTOM-HEIGHT)/2
 							Background: button-transparent
-				Button@CAMPAIGN_PREVIEW_BACK_BUTTON:
-					X: PARENT_RIGHT - PARENT_RIGHT
-					Y: PARENT_BOTTOM - 1
-					Width: 140
-					Height: 35
-					Text: Back
-					Font: Bold
-					Key: Escape
-				Button@CAMPAIGN_PREVIEW_CONTINUE_BUTTON:
-					X: PARENT_RIGHT - 140
-					Y: PARENT_BOTTOM - 1
-					Width: 140
-					Height: 35
-					Text: Continue
-					Font: Bold
-					Key: Return
+				Background@CAMPAIGN_PREVIEW_BG:
+					X: 0
+					Y: PARENT_BOTTOM
+					Width: PARENT_RIGHT
+					Height: 2 * 15 + 35
+					Children:
+						Button@CAMPAIGN_PREVIEW_BACK_BUTTON:
+							X: PARENT_RIGHT - 15 - WIDTH
+							Y: 15
+							Width: 140
+							Height: 35
+							Text: Back
+							Font: Bold
+							Key: Escape
+						Button@CAMPAIGN_PREVIEW_CONTINUE_BUTTON:
+							X: 15
+							Y: 15
+							Width: 140
+							Height: 35
+							Text: Continue
+							Font: Bold
+							Key: Return
 		Container@CAMPAIGN_BROWSER:
-			X: WINDOW_RIGHT / 8
-			Y: WINDOW_BOTTOM / 4
-			Width: WINDOW_RIGHT * 6/8
-			Height: WINDOW_BOTTOM * 1/2
+			X: WINDOW_RIGHT/2 - WIDTH/2
+			Y: WINDOW_BOTTOM/2 - HEIGHT/2
+			Width: 700
+			Height: 350
 			Children:
 				Label@CAMPAIGN_MENU_TITLE:
 					Y: 0-25
@@ -102,7 +104,7 @@ Container@CAMPAIGN_WORLD:
 									Background: button-transparent
 						Button@PREVIOUS_BUTTON:
 							X: 10
-							Y: PARENT_BOTTOM - 10 - 35
+							Y: PARENT_BOTTOM - HEIGHT - 10
 							Width: 35
 							Height: 35
 							Font: Bold
@@ -116,8 +118,8 @@ Container@CAMPAIGN_WORLD:
 									ImageCollection: music
 									ImageName: prev
 						Button@NEXT_BUTTON:
-							X: PARENT_RIGHT - 10 - 35
-							Y: PARENT_BOTTOM - 10 - 35
+							X: PARENT_RIGHT - WIDTH - 10
+							Y: PARENT_BOTTOM - HEIGHT - 10
 							Width: 35
 							Height: 35
 							Font: Bold
@@ -206,7 +208,7 @@ Container@CAMPAIGN_WORLD:
 							Height: PARENT_BOTTOM
 							Children:
 								Button@PLAY_BUTTON:
-									X: PARENT_RIGHT - 15 - WIDTH
+									X: 15
 									Y: 15
 									Width: 140
 									Height: 35
@@ -214,7 +216,7 @@ Container@CAMPAIGN_WORLD:
 									Font: Bold
 									Key: Return
 								Button@CAMPAIGN_BROWSER_BACK_BUTTON:
-									X: 15
+									X: PARENT_RIGHT - 15 - WIDTH
 									Y: 15
 									Width: 140
 									Height: 35
@@ -222,10 +224,10 @@ Container@CAMPAIGN_WORLD:
 									Font: Bold
 									Key: Escape	
 		Container@CAMPAIGN_CONGRATULATION:
-			X: WINDOW_RIGHT/4
-			Y: (WINDOW_BOTTOM - HEIGHT)/2
-			Width: WINDOW_RIGHT / 2
-			Height: WINDOW_BOTTOM / 2
+			X: WINDOW_RIGHT/2 - WIDTH/2
+			Y: WINDOW_BOTTOM/2 - HEIGHT/2
+			Width: 500
+			Height: 300
 			Children:
 				Label@CONGRATULATION_MENU_TITLE:
 					Y: 0-25
@@ -237,27 +239,11 @@ Container@CAMPAIGN_WORLD:
 				Background@CAMPAIGN_CONGRATULATION_BG:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
-				Button@CAMPAIGN_CONGRATULATION_BACK_BUTTON:
-					X: 15
-					Y: PARENT_BOTTOM - 35 - 15
-					Width: 140
-					Height: 35
-					Text: Back
-					Font: Bold
-					Key: Escape
-				Button@CAMPAIGN_CONGRATULATION_CONTINUE_BUTTON:
-					X: PARENT_RIGHT - 160 - 15
-					Y: PARENT_BOTTOM - 35 - 15
-					Width: 160
-					Height: 35
-					Text: Replay final Mission
-					Font: Bold
-					Key: Return
 				ScrollPanel@CONGRATULATION_TEXT_PANEL:
 					X: 15
 					Y: 15
 					Width: (PARENT_RIGHT / 2) - 15
-					Height: PARENT_BOTTOM - 70
+					Height: PARENT_BOTTOM - 30
 					Background: dialog3
 					Children:
 						Label@CONGRATULATION_TEXT:
@@ -268,7 +254,7 @@ Container@CAMPAIGN_WORLD:
 					X: (PARENT_RIGHT/2)
 					Y: 15
 					Width: (PARENT_RIGHT / 2) - 15
-					Height: PARENT_BOTTOM - 70
+					Height: PARENT_BOTTOM - 30
 					Children:
 						Image@ALLIES_LOGO:
 							X: PARENT_RIGHT / 2 - 86
@@ -279,10 +265,32 @@ Container@CAMPAIGN_WORLD:
 					X: (PARENT_RIGHT/2)
 					Y: 15
 					Width: (PARENT_RIGHT / 2) - 15
-					Height: PARENT_BOTTOM - 70
+					Height: PARENT_BOTTOM - 30
 					Children:
 						Image@ALLIES_LOGO:
 							X: PARENT_RIGHT / 2 - 86
 							Y: PARENT_BOTTOM / 2 - 86
 							ImageCollection: choose-logos
 							ImageName: soviet
+				Background@BG:
+					X: 0
+					Y: PARENT_BOTTOM
+					Width: PARENT_RIGHT
+					Height: 2 * 15 + 35
+					Children:
+						Button@CAMPAIGN_CONGRATULATION_BACK_BUTTON:
+							X: PARENT_RIGHT - 15 - WIDTH
+							Y: 15
+							Width: 140
+							Height: 35
+							Text: Back
+							Font: Bold
+							Key: Escape
+						Button@CAMPAIGN_CONGRATULATION_CONTINUE_BUTTON:
+							X: 15
+							Y: 15
+							Width: 160
+							Height: 35
+							Text: Replay final mission
+							Font: Bold
+							Key: Return
