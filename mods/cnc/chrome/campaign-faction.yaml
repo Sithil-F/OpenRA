@@ -7,6 +7,10 @@ Container@CAMPAIGN_FACTION:
 			Width: WINDOW_RIGHT
 			Height: WINDOW_BOTTOM*4/5
 			Children:
+				Background:
+					Width: WINDOW_RIGHT
+					Height: WINDOW_BOTTOM
+					Background: panel-allblack
 				Background@BG:
 					Width: WINDOW_RIGHT
 					Height: WINDOW_BOTTOM - 64

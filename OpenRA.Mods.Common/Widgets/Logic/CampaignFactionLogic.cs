@@ -26,6 +26,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 		readonly VqaPlayerWidget videoPlayer;
 		readonly VqaPlayerWidget videoBGPlayer;
 		readonly ImageWidget chooseFactionBanner;
+		readonly BackgroundWidget chooseFactionNoise;
 		readonly float cachedMusicVolume;
 		bool videoStopped = false;
 		bool campaignStarted = false;
@@ -69,6 +70,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 
 			videoBGPlayer = widget.Get<VqaPlayerWidget>("VIDEO_BG");
 			chooseFactionBanner = widget.GetOrNull<ImageWidget>("CHOOSE_FACTION_IMAGE");
+			chooseFactionNoise = widget.GetOrNull<BackgroundWidget>("BG");
 
 			this.videoPlayer = widget.Get<VqaPlayerWidget>("VIDEO");
 
@@ -80,6 +82,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 
 			if (VideoStart != null && GlobalFileSystem.Exists(VideoStart))
 			{
+				if (chooseFactionNoise != null)
+					chooseFactionNoise.Visible = false;
 				foreach (var image in imageList)
 				{
 					image.Visible = false;
@@ -147,6 +151,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 
 			if (chooseFactionBanner != null)
 				chooseFactionBanner.Visible = false;
+			if (chooseFactionNoise != null)
+				chooseFactionNoise.Visible = false;
 			CampaignProgress.SaveProgress(faction, "");
 			startedCampaign = faction + " Campaign";
 
