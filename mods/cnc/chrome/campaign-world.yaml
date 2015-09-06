@@ -2,8 +2,8 @@ Container@CAMPAIGN_WORLD:
 	Logic: CampaignWorldLogic
 	X: 0
 	Y: 0
-	Width: WINDOW_RIGHT#WINDOW_RIGHT / 2
-	Height: WINDOW_BOTTOM#WINDOW_BOTTOM / 2
+	Width: WINDOW_RIGHT
+	Height: WINDOW_BOTTOM
 	Children:
 		Background@VIDEO_BG:
 			Width: WINDOW_RIGHT
@@ -14,10 +14,10 @@ Container@CAMPAIGN_WORLD:
 					Width: WINDOW_RIGHT
 					Height: WINDOW_BOTTOM
 		Container@CAMPAIGN_PREVIEW:
-			X: WINDOW_RIGHT/4
-			Y: (WINDOW_BOTTOM - HEIGHT)/2
-			Width: WINDOW_RIGHT / 2
-			Height: WINDOW_BOTTOM / 2
+			X: WINDOW_RIGHT/2 - WIDTH/2
+			Y: WINDOW_BOTTOM/2 - HEIGHT/2
+			Width: 450
+			Height: 300
 			Children:
 				Label@PREVIEW_MENU_TITLE:
 					Y: 0-25
@@ -26,26 +26,26 @@ Container@CAMPAIGN_WORLD:
 					Contrast: true
 					Font: BigBold
 				Background@CAMPAIGN_PREVIEW_BG:
-					Width: WINDOW_RIGHT / 2
-					Height: WINDOW_BOTTOM / 2
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
 					Background: panel-black
 					Children:
 						MapPreview@CAMPAIGN_PREVIEW_GRAFIC:
-							Width: PARENT_RIGHT-15
-							Height: PARENT_BOTTOM-15
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
 							X: (PARENT_RIGHT-WIDTH)/2
 							Y: (PARENT_BOTTOM-HEIGHT)/2
 							IgnoreMouseOver: True
 							IgnoreMouseInput: True
 							ShowSpawnPoints: False
 						Button@CAMPAIGN_PREVIEW_GRAFIC_BUTTON
-							Width: PARENT_RIGHT-15
-							Height: PARENT_BOTTOM-15
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
 							X: (PARENT_RIGHT-WIDTH)/2
 							Y: (PARENT_BOTTOM-HEIGHT)/2
 							Background: button-transparent
 				Button@CAMPAIGN_PREVIEW_BACK_BUTTON:
-					X: PARENT_RIGHT - PARENT_RIGHT
+					X: 0
 					Y: PARENT_BOTTOM - 1
 					Width: 140
 					Height: 35
@@ -53,7 +53,7 @@ Container@CAMPAIGN_WORLD:
 					Font: Bold
 					Key: Escape
 				Button@CAMPAIGN_PREVIEW_CONTINUE_BUTTON:
-					X: PARENT_RIGHT - 140
+					X: PARENT_RIGHT - WIDTH
 					Y: PARENT_BOTTOM - 1
 					Width: 140
 					Height: 35
@@ -61,10 +61,10 @@ Container@CAMPAIGN_WORLD:
 					Font: Bold
 					Key: Return
 		Container@CAMPAIGN_BROWSER:
-			X: WINDOW_RIGHT/4
-			Y: (WINDOW_BOTTOM - HEIGHT)/2
-			Width: WINDOW_RIGHT / 2
-			Height: WINDOW_BOTTOM / 2
+			X: WINDOW_RIGHT/2 - WIDTH/2
+			Y: WINDOW_BOTTOM/2 - HEIGHT/2
+			Width: 750
+			Height: 350
 			Children:
 				Label@CAMPAIGN_MENU_TITLE:
 					Y: 0-25
@@ -73,13 +73,14 @@ Container@CAMPAIGN_WORLD:
 					Contrast: true
 					Font: BigBold
 				Container@CAMPAIGN_BROWSER_GRAFIC_CONTAINER:
-					X: 0 - WINDOW_RIGHT / 6
-					Width: WINDOW_RIGHT / 2 + 1
-					Height: WINDOW_BOTTOM / 2
+					X: 0
+					Y: 0
+					Width: PARENT_RIGHT * 3/5
+					Height: PARENT_BOTTOM
 					Children:
 						Background@BG:
-							Width: WINDOW_RIGHT / 2
-							Height: WINDOW_BOTTOM / 2 + 1
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
 							Background: panel-black
 							Children:
 								Label@MISSION_TITLE:
@@ -104,8 +105,8 @@ Container@CAMPAIGN_WORLD:
 									Height: PARENT_BOTTOM-2
 									Background: button-transparent
 						Button@PREVIOUS_BUTTON:
-							X: PARENT_RIGHT - (WINDOW_RIGHT / 2) + 3
-							Y: PARENT_BOTTOM - 35 - 3
+							X: 5
+							Y: PARENT_BOTTOM - WIDTH - 5
 							Width: 35
 							Height: 35
 							Font: Bold
@@ -119,8 +120,8 @@ Container@CAMPAIGN_WORLD:
 									ImageCollection: scrollbar
 									ImageName: left_arrow
 						Button@NEXT_BUTTON:
-							X: PARENT_RIGHT - 35 - 5
-							Y: PARENT_BOTTOM - 35 - 3
+							X: PARENT_RIGHT - WIDTH - 5
+							Y: PARENT_BOTTOM - WIDTH - 5
 							Width: 35
 							Height: 35
 							Font: Bold
@@ -134,13 +135,14 @@ Container@CAMPAIGN_WORLD:
 									ImageCollection: scrollbar
 									ImageName: right_arrow
 				Container@CAMPAIGN_WORLD_MISSION_CONTAINER:
-					X: WINDOW_RIGHT / 3
-					Width: WINDOW_RIGHT / 3
-					Height: WINDOW_BOTTOM / 4
+					X: PARENT_RIGHT * 3/5 - 1
+					Y: 0
+					Width: PARENT_RIGHT * 2/5
+					Height: PARENT_BOTTOM / 2
 					Children:
 						Background@BG:
-							Width: WINDOW_RIGHT / 3
-							Height: WINDOW_BOTTOM / 4
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
 							Background: panel-black
 						Label@MISSION:
 							Y: 20
@@ -152,7 +154,7 @@ Container@CAMPAIGN_WORLD:
 						ScrollPanel@MISSION_DESCRIPTION_PANEL:
 							Y: 40
 							Width: PARENT_RIGHT
-							Height: (WINDOW_BOTTOM / 4) - 40
+							Height: PARENT_BOTTOM - 40
 							Children:
 								Label@MISSION_DESCRIPTION:
 									X: 4
@@ -161,14 +163,14 @@ Container@CAMPAIGN_WORLD:
 									VAlign: Top
 									Font: Small
 				Container@CAMPAIGN_WORLD_COUNTRY_CONTAINER:
-					X: WINDOW_RIGHT / 3
-					Y: WINDOW_BOTTOM / 4
-					Width: WINDOW_RIGHT / 3
-					Height: WINDOW_BOTTOM / 4
+					X: PARENT_RIGHT * 3/5 - 1
+					Y: PARENT_BOTTOM / 2 - 1
+					Width: PARENT_RIGHT * 2/5
+					Height: PARENT_BOTTOM / 2 + 1
 					Children:
 						Background@BG:
-							Width: WINDOW_RIGHT / 3
-							Height: WINDOW_BOTTOM / 4
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
 							Background: panel-black
 						Label@COUNTRY_LABLE:
 							Y: 20
@@ -180,7 +182,7 @@ Container@CAMPAIGN_WORLD:
 						ScrollPanel@COUNTRY_DESCRIPTION_PANEL:
 							Y: 40
 							Width: PARENT_RIGHT
-							Height: (WINDOW_BOTTOM / 4) - 40
+							Height: PARENT_BOTTOM - 40
 							Children:
 								Label@COUNTRY_DESCRIPTION_HEADER:
 									X: 4
@@ -196,26 +198,26 @@ Container@CAMPAIGN_WORLD:
 											VAlign: Top
 											Font: Small
 				Button@PLAY_BUTTON:
-					X: (2 * WINDOW_RIGHT / 3) - 140
-					Y: WINDOW_BOTTOM / 2
+					X: PARENT_RIGHT - 140 - 1
+					Y: PARENT_BOTTOM - 1
 					Width: 140
 					Height: 35
 					Text: Play
 					Font: Bold
 					Key: Return
 				Button@CAMPAIGN_BROWSER_BACK_BUTTON:
-					X: 0 - WINDOW_RIGHT / 6
-					Y: WINDOW_BOTTOM / 2
+					X: 0
+					Y: PARENT_BOTTOM - 1
 					Width: 140
 					Height: 35
 					Text: Back
 					Font: Bold
 					Key: Escape	
 		Container@CAMPAIGN_CONGRATULATION:
-			X: WINDOW_RIGHT/4
-			Y: (WINDOW_BOTTOM - HEIGHT)/2
-			Width: WINDOW_RIGHT / 2
-			Height: WINDOW_BOTTOM / 2
+			X: WINDOW_RIGHT/2 - WIDTH/2
+			Y: WINDOW_BOTTOM/2 - HEIGHT/2
+			Width: 500
+			Height: 350
 			Children:
 				Label@CONGRATULATION_MENU_TITLE:
 					Y: 0-25
@@ -225,8 +227,8 @@ Container@CAMPAIGN_WORLD:
 					Text: Congratulations
 					Font: BigBold
 				Background@CAMPAIGN_CONGRATULATION_BG:
-					Width: WINDOW_RIGHT / 2
-					Height: WINDOW_BOTTOM / 2
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
 					Background: panel-black
 				Button@CAMPAIGN_CONGRATULATION_BACK_BUTTON:
 					X: PARENT_RIGHT - PARENT_RIGHT
@@ -237,11 +239,11 @@ Container@CAMPAIGN_WORLD:
 					Font: Bold
 					Key: Escape
 				Button@CAMPAIGN_CONGRATULATION_CONTINUE_BUTTON:
-					X: PARENT_RIGHT - 160
+					X: PARENT_RIGHT - WIDTH
 					Y: PARENT_BOTTOM - 1
 					Width: 160
 					Height: 35
-					Text: Replay final Mission
+					Text: Replay final mission
 					Font: Bold
 					Key: Return
 				ScrollPanel@CONGRATULATION_TEXT_PANEL:
@@ -264,7 +266,6 @@ Container@CAMPAIGN_WORLD:
 							Y: 1
 							Width: PARENT_RIGHT
 							Height: PARENT_BOTTOM - 2
-							Background: panel-allblack
 						Image@GDI_LOGO:
 							X: PARENT_RIGHT / 2 - 96
 							Y: PARENT_BOTTOM / 2 - 126
@@ -280,7 +281,6 @@ Container@CAMPAIGN_WORLD:
 							Y: 1
 							Width: PARENT_RIGHT
 							Height: PARENT_BOTTOM - 2
-							Background: panel-allblack
 						Image@NOD_LOGO:
 							X: PARENT_RIGHT / 2 - 90
 							Y: PARENT_BOTTOM / 2 - 136
