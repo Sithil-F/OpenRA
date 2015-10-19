@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			this.onStart = onStart;
 
-			cachedMusicVolume = Sound.MusicVolume;
+			cachedMusicVolume = Game.Sound.MusicVolume;
 
 			worldMenuTitle = widget.Get<LabelWidget>("CAMPAIGN_MENU_TITLE");
 			campaignBrowser = widget.Get<ContainerWidget>("CAMPAIGN_BROWSER");
@@ -125,7 +125,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public void PlayAndStart()
 		{
-			Sound.MusicVolume = 0;
+			Game.Sound.MusicVolume = 0;
 
 			if (campaignMissionBrowser.GetNextMap().Videos.Briefing != null && GlobalFileSystem.Exists(campaignMissionBrowser.GetNextMap().Videos.Briefing))
 			{
@@ -145,7 +145,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			if (videoStopped)
 			{
-				Sound.MusicVolume = cachedMusicVolume;
+				Game.Sound.MusicVolume = cachedMusicVolume;
 				videoPlayer.Stop();
 			}
 			else

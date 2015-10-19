@@ -75,8 +75,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 			this.videoPlayer = widget.Get<VqaPlayerWidget>("VIDEO");
 
 			// Mute other distracting sounds
-			cachedMusicVolume = Sound.MusicVolume;
-			Sound.MusicVolume = 0;
+			cachedMusicVolume = Game.Sound.MusicVolume;
+			Game.Sound.MusicVolume = 0;
 
 			GetStartVideo();
 
@@ -159,7 +159,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 			GetFactionMedia(faction);
 
 			if (audioFaction != null)
-				Sound.Play(audioFaction);
+				Game.Sound.Play(audioFaction);
 
 			if (VideoStart == null)
 			{
@@ -242,7 +242,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.CampaignLogic
 		{
 			videoBGPlayer.Visible = false;
 			videoPlayer.Visible = false;
-			Sound.MusicVolume = cachedMusicVolume;
+			Game.Sound.MusicVolume = cachedMusicVolume;
 			videoPlayer.Stop();
 			videoStopped = true;
 		}
