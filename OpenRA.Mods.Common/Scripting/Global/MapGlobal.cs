@@ -134,12 +134,5 @@ namespace OpenRA.Mods.Common.Scripting
 			return actor.ActorID <= sma.LastMapActorID && actor.ActorID > sma.LastMapActorID - sma.Actors.Count;
 		}
 
-		[Desc("Save current map progress befor the player leaves the map. File is called like <Mod><MissionName>Progress.yaml")]
-		public void saveMapProgress()
-		{
-			// TODO: Create File if not available
-			// TODO: Check if campaign-mode is played and game is won to set a CampaignMissionCompletedFlag
-			// TODO: Save other stuff 
-		}
 	}
 }
